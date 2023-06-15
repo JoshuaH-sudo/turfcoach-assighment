@@ -7,9 +7,11 @@ import expressStaticGzip from "express-static-gzip"
 import fs from "fs"
 
 import app_router from "./routes/app"
+import weather_router from "./routes/weather"
 import debug from "debug"
 import { setup_pitch_collection } from "./models/pitch"
 import { setup_user_collection } from "./models/user"
+
 const { config } = require("dotenv")
 config()
 
@@ -32,6 +34,7 @@ app.use(
 )
 
 app.use("/", app_router)
+app.use("/weather", weather_router)
 
 async function start_database() {
   debugLog("Connecting to database")

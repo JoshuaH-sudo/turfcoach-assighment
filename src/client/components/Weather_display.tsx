@@ -1,8 +1,10 @@
 import axios from "axios"
 import React, { FC, useEffect, useState } from "react"
+import use_api from "../hooks/use_api"
 
 const Weather_display: FC = () => {
   const [weather_report, set_weather_report] = useState({})
+  const { get } = use_api()
 
   const get_location_data: PositionCallback = (data) => {
     const { latitude, longitude } = data.coords
@@ -10,12 +12,7 @@ const Weather_display: FC = () => {
   }
 
   const get_current_weather = async (lat: number, lon: number) => {
-    const API = "b6921fa8b552eca0ccc2a30730baa10c"
-
-    const results = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API}`
-    )
-
+    const results = get("weather", { params: { lat, lon }})
     set_weather_report(results)
   }
 

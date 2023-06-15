@@ -20,8 +20,12 @@ const use_api = () => {
     }
   }
 
-  const get = async <T,>(url: string, config: AxiosRequestConfig) => {
-    return await error_wrapper<T>(axios.get(url, config))
+  const get = async <T,>(url: string, config: AxiosRequestConfig = {}) => {
+    const base = window.location.toString()
+    console.debug(base);
+    console.debug(window.location);
+    const request_url = base + url
+    return await error_wrapper<T>(axios.get(request_url, config))
   }
 
   return { get }

@@ -5,6 +5,7 @@ declare global {
       MONGO_URI?: string;
       MONGO_URI_FILE?: string;
       PORT?: string;
+      WEATHER_API_KEY: string;
     }
   }
 }
