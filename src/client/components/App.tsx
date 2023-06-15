@@ -9,6 +9,7 @@ import {
   EuiPageSection,
   EuiProvider,
 } from "@elastic/eui"
+import Weather_display from "./Weather_display";
 
 const App: FC = () => {
   return (
@@ -17,6 +18,9 @@ const App: FC = () => {
         <EuiPageBody>
           <EuiPageSection>
             hello world
+          </EuiPageSection>
+          <EuiPageSection>
+            <Weather_display />
           </EuiPageSection>
         </EuiPageBody>
       </EuiPage>
