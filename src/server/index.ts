@@ -8,6 +8,8 @@ import fs from "fs"
 
 import app_router from "./routes/app"
 import debug from "debug"
+import { setup_pitch_collection } from "./models/pitch"
+import { setup_user_collection } from "./models/user"
 const { config } = require("dotenv")
 config()
 
@@ -40,6 +42,8 @@ async function start_database() {
 
   try {
     debugLog("Initializing the database")
+    await setup_pitch_collection()
+    await setup_user_collection()
   } catch (error) {
     errorLog(error)
   }

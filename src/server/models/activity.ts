@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 
-// The pitches the tasks can be preformed on
-const pitch_schema = new mongoose.Schema({
+const activity_schema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["mowing", "fertilisation", "irrigation", "aeration"],
@@ -24,6 +23,6 @@ const pitch_schema = new mongoose.Schema({
   }
 })
 
-const Pitch = mongoose.model("Pitch", pitch_schema)
+const Activity = mongoose.model("Activity", activity_schema)
 
-export default Pitch
+export default Activity
