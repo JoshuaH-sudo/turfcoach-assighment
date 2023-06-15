@@ -15,3 +15,4 @@ globalConfig.json
 !.env.vault
 
 *code-workspace*
+.vscode

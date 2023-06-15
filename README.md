@@ -2,11 +2,11 @@
 ## Setup
 ### Prerequisites: 
 Have yarn and docker installed on your machine.
-This application was designed to mainly be run on a linux, WSL or equivalent OS/System
+This application was designed to mainly be run on a Linux, WSL or equivalent OS/System
 
-### Run locally from repo
+### Run outside of Docker
 - Clone repo
-- Have a instance of mongo running.
+- Have an instance of mongo running.
 - Install dependencies: `yarn install`
 - Build app:
   - Development version run `yarn dev_build`
@@ -16,9 +16,12 @@ This application was designed to mainly be run on a linux, WSL or equivalent OS/
 
 **Note:** Example mongo_uri: `mongodb://localhost:27017/hsl_bike_app`
 
-### Run docker stack from repo
+### Run Docker stack
 - Clone repo
 - Run either (both will setup mongo database and run the app):
   - The development build version: `yarn docker_dev`
   - The production build version: `yarn docker_prod` 
 - Open browser [here](http://localhost:8080/)
+
+## TODO
+- Display Weather information
