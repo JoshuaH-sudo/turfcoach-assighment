@@ -12,7 +12,7 @@ const use_api = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const error_message =
-          error.response?.data.message ?? "Failed to get stations"
+          error.response?.data.message ?? "Request Failed"
         throw error_message
       } else {
         throw error

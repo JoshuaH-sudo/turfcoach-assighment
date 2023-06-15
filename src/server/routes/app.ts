@@ -1,4 +1,3 @@
-//Using import syntax allows typings from express
 import express from "express";
 const router = express.Router()
 
