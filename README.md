@@ -29,6 +29,6 @@ Web application to schedule activities and display weather data for your chosen 
 6. User should be able to delete the activity Weather. The weather data should show current temperature and have some indication about expected rain/precipitation for the rest of the day. For this you are welcome to use any api/website.
   a. https://openweathermap.org/api is a free example Display.
 
-1. The display should be responsive. Consider mobile (480px) and desktop version (1080px) breakpoints. You are welcome to use Tailwind or raw css.
+7. The display should be responsive. Consider mobile (480px) and desktop version (1080px) breakpoints. You are welcome to use Tailwind or raw css.
    
-2.  Do not spend too much time on the designs, but it should look presentable. 
+8.  Do not spend too much time on the designs, but it should look presentable. 

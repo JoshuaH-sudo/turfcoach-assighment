@@ -1,0 +1,17 @@
+public/*
+test_datasets/
+*.csv
+
+node_modules/
+.eslintcache
+
+coverage/
+globalConfig.json
+
+*.env*
+!TEMPLATE.*
+.flaskenv*
+!.env.project
+!.env.vault
+
+*code-workspace*

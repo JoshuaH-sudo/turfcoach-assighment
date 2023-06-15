@@ -1,0 +1,17 @@
+FROM node:gallium-bullseye-slim
+WORKDIR /home/node/app
+
+# Copy all files from the root directory.
+COPY . .
+
+RUN yarn install
+RUN yarn prod_build
+
+# Remove unused files after client bundling.
+RUN rm -rf src/client
+RUN rm -rf scripts/webpack
+RUN rm -rf scripts/build.sh
+
+EXPOSE 8080
+# run command to copy secrets to app before starting.
+CMD ["yarn", "start"]

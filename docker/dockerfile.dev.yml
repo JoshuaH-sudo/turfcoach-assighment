@@ -1,0 +1,12 @@
+FROM node:gallium-bullseye-slim
+WORKDIR /home/node/app
+
+# Copy all files from the root directory
+COPY . .
+
+RUN yarn install
+RUN yarn dev_build
+
+EXPOSE 8080
+
+CMD ["yarn", "start"]
