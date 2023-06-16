@@ -8,6 +8,7 @@ import fs from "fs"
 
 import app_router from "./routes/app"
 import weather_router from "./routes/weather"
+import schedule_router from "./routes/schedule"
 import { setup_pitch_collection } from "./models/pitch"
 import { setup_user_collection } from "./models/user"
 
@@ -36,6 +37,7 @@ app.use(
 
 app.use("/", app_router)
 app.use("/weather", weather_router)
+app.use("/schedule", schedule_router)
 
 app.use(error_handler)
 

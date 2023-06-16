@@ -1,4 +1,12 @@
+import { Moment } from "moment"
 import mongoose from "mongoose"
+
+export interface Schedule_activity {
+  type: string
+  date: Moment
+  user: string
+  pitch: string
+}
 
 const activity_schema = new mongoose.Schema({
   type: {
@@ -12,15 +20,15 @@ const activity_schema = new mongoose.Schema({
     required: true,
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
+    type: String,
+    enum: ["john", "tom", "tony"],
+    required: true,
   },
   pitch: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Pitch",
-    required: true
-  }
+    type: String,
+    enum: ["pitch_1", "pitch_2", "pitch_3"],
+    required: true,
+  },
 })
 
 const Activity = mongoose.model("Activity", activity_schema)

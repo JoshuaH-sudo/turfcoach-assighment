@@ -6,8 +6,9 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
 } from "@elastic/eui"
-import React, { FC, LegacyRef, useRef } from "react"
-import Activity_form, { Schedule_activity } from "./Activity_form"
+import React, { FC, useRef } from "react"
+import Activity_form from "./Activity_form"
+import { Schedule_activity } from "../../../server/models/activity"
 
 interface Activity_modal_props {
   close_modal: () => void
