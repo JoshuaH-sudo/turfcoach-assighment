@@ -18,7 +18,11 @@ const App: FC = () => {
           </EuiPageSection>
           <EuiPageSection>
             <Schedule_display />
-            <Activity_modal />
+            <Activity_modal
+              close_modal={() => {
+                return
+              }}
+            />
           </EuiPageSection>
         </EuiPageBody>
       </EuiPage>

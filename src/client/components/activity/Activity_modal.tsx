@@ -6,26 +6,43 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
 } from "@elastic/eui"
-import React from "react"
-import Activity_form from "./Activity_form"
+import React, { FC, LegacyRef, useRef } from "react"
+import Activity_form, { Schedule_activity } from "./Activity_form"
 
-const Activity_modal = () => {
-  const closeModal = () => {
-    return
+interface Activity_modal_props {
+  close_modal: () => void
+  edit_schedule_activity?: Schedule_activity
+}
+
+const Activity_modal: FC<Activity_modal_props> = ({
+  close_modal,
+  edit_schedule_activity,
+}) => {
+  const submit_button_ref = useRef<HTMLButtonElement>()
+
+  const on_confirm = () => {
+    close_modal()
+    submit_button_ref.current?.click()
   }
   return (
-    <EuiModal onClose={closeModal}>
+    <EuiModal onClose={close_modal}>
       <EuiModalHeader>
         <EuiModalHeaderTitle>Schedule New Activity</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
-        <Activity_form />
+        <Activity_form
+          edit_schedule_activity={edit_schedule_activity}
+          submit_button_ref={submit_button_ref}
+        />
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButton onClick={closeModal} fill>
-          Close
+        <EuiButton onClick={close_modal} fill>
+          Cancel
+        </EuiButton>
+        <EuiButton onClick={on_confirm} fill>
+          Add
         </EuiButton>
       </EuiModalFooter>
     </EuiModal>

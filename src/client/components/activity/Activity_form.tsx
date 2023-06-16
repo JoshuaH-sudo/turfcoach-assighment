@@ -6,7 +6,7 @@ import {
   EuiSelectOption,
 } from "@elastic/eui"
 import moment, { Moment } from "moment"
-import React, { ChangeEventHandler, FC, useState } from "react"
+import React, { ChangeEventHandler, FC, FormEventHandler, LegacyRef, useState } from "react"
 
 export interface Schedule_activity {
   activity: string
@@ -73,8 +73,16 @@ const new_schedule_activity = {
 
 interface Activity_form_props {
   edit_schedule_activity?: Schedule_activity
+
+  /**
+   * A reference to the parent modal submit button, to trigger the on submit event of the form.
+   */
+  submit_button_ref: React.MutableRefObject<HTMLButtonElement | undefined>
 }
-const Activity_form: FC<Activity_form_props> = ({ edit_schedule_activity }) => {
+const Activity_form: FC<Activity_form_props> = ({
+  edit_schedule_activity,
+  submit_button_ref,
+}) => {
   const edit_mode = !!edit_schedule_activity
 
   const [activity_schedule_data, set_activity_schedule_data] =
@@ -107,9 +115,14 @@ const Activity_form: FC<Activity_form_props> = ({ edit_schedule_activity }) => {
     })
   }
 
+  const on_submit:FormEventHandler = (event) => {
+    event.preventDefault();
+    alert(JSON.stringify(activity_schedule_data))
+  }
+
   const { activity, date, user, pitch } = activity_schedule_data
   return (
-    <EuiForm>
+    <EuiForm component="form" onSubmit={on_submit}>
       <EuiFormRow>
         <EuiSelect
           options={activity_options}
@@ -117,12 +130,15 @@ const Activity_form: FC<Activity_form_props> = ({ edit_schedule_activity }) => {
           onChange={on_activity_select}
         />
       </EuiFormRow>
+
       <EuiFormRow>
         <EuiDatePicker showTimeSelect selected={date} onChange={on_date_select} />
       </EuiFormRow>
+
       <EuiFormRow>
         <EuiSelect options={user_options} value={user} onChange={on_user_select} />
       </EuiFormRow>
+
       <EuiFormRow>
         <EuiSelect
           options={pitch_options}
@@ -130,6 +146,13 @@ const Activity_form: FC<Activity_form_props> = ({ edit_schedule_activity }) => {
           onChange={on_pitch_select}
         />
       </EuiFormRow>
+
+      <button
+        type="submit"
+        hidden={true}
+        // Type error occurs but ref will work correctly.
+        ref={submit_button_ref as LegacyRef<HTMLButtonElement>}
+      />
     </EuiForm>
   )
 }
