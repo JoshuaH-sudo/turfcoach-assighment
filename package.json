@@ -28,7 +28,7 @@
   "dependencies": {
     "@elastic/charts": "^58.1.0",
     "@elastic/datemath": "^5.0.3",
-    "@elastic/eui": "^76.2.0",
+    "@elastic/eui": "^82.1.0",
     "@emotion/css": "^11.10.6",
     "@emotion/react": "^11.10.6",
     "@types/express": "^4.17.17",
