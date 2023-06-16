@@ -81,6 +81,10 @@ const Weather_display: FC = () => {
   const size: ChartSize = [600, 200]
   return (
     <>
+      {weather_report.weather.map((report) => (
+        <img src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`} />
+      ))}
+
       {/*@ts-ignore the size is correct but will give a type error*/}
       <Chart size={size}>
         <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
