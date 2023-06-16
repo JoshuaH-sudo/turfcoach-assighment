@@ -16,7 +16,7 @@ config()
 
 import debug from "debug"
 import error_handler from "./middleware/error_handler"
-const debugLog = debug("app:server:log")
+const debugLog = debug("app:server:debug")
 const errorLog = debug("app:server:error")
 
 const app = express()

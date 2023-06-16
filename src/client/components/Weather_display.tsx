@@ -1,4 +1,3 @@
-import axios from "axios"
 import React, { FC, useEffect, useState } from "react"
 import use_api from "../hooks/use_api"
 
@@ -12,8 +11,12 @@ const Weather_display: FC = () => {
   }
 
   const get_current_weather = async (lat: number, lon: number) => {
-    const results = get("weather", { params: { lat, lon }})
-    set_weather_report(results)
+    try {
+      const results = await get("weather", { params: { lat, lon } })
+      set_weather_report(results)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {

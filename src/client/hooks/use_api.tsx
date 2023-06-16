@@ -6,7 +6,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
  */
 const use_api = () => {
   //This will handle any axios errors and pass the error message to the caller
-  const error_wrapper = async <T,>(response: Promise<AxiosResponse<T>>) => {
+  const response_wrapper = async <T,>(response: Promise<AxiosResponse<T>>) => {
     try {
       return await response
     } catch (error) {
@@ -22,10 +22,8 @@ const use_api = () => {
 
   const get = async <T,>(url: string, config: AxiosRequestConfig = {}) => {
     const base = window.location.toString()
-    console.debug(base);
-    console.debug(window.location);
     const request_url = base + url
-    return await error_wrapper<T>(axios.get(request_url, config))
+    return await response_wrapper<T>(axios.get(request_url, config))
   }
 
   return { get }
