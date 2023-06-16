@@ -9,31 +9,35 @@ import {
 import React, { FC, useRef } from "react"
 import Activity_form from "./Activity_form"
 import { Schedule_activity } from "../../../server/models/activity"
+import { Resource } from "../../../common/types"
 
 interface Activity_modal_props {
   close_modal: () => void
-  edit_schedule_activity?: Schedule_activity
+  edit_activity?: Resource<Schedule_activity>
 }
 
 const Activity_modal: FC<Activity_modal_props> = ({
   close_modal,
-  edit_schedule_activity,
+  edit_activity,
 }) => {
+  const edit_mode = !!edit_activity
   const submit_button_ref = useRef<HTMLButtonElement>()
 
   const on_confirm = () => {
     close_modal()
     submit_button_ref.current?.click()
   }
+
+  const title = `${edit_mode ? "Edit" : "Schedule New"} Activity`
   return (
     <EuiModal onClose={close_modal}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Schedule New Activity</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
         <Activity_form
-          edit_schedule_activity={edit_schedule_activity}
+          edit_activity={edit_activity}
           submit_button_ref={submit_button_ref}
           close_modal={close_modal}
         />
@@ -44,7 +48,7 @@ const Activity_modal: FC<Activity_modal_props> = ({
           Cancel
         </EuiButton>
         <EuiButton onClick={on_confirm} fill>
-          Add
+          {edit_mode ? "Edit" : "Add"}
         </EuiButton>
       </EuiModalFooter>
     </EuiModal>

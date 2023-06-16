@@ -13,8 +13,12 @@ import React, {
   LegacyRef,
   useState,
 } from "react"
-import { Schedule_activity } from "../../../server/models/activity"
+import {
+  Expanded_schedule_activity,
+  Schedule_activity,
+} from "../../../server/models/activity"
 import use_api from "../../hooks/use_api"
+import { Resource } from "../../../common/types"
 
 const pitch_options: EuiSelectOption[] = [
   {
@@ -65,7 +69,7 @@ const user_options: EuiSelectOption[] = [
   },
 ]
 
-const new_schedule_activity: Schedule_activity = {
+const new_schedule_activity: Expanded_schedule_activity = {
   type: "mowing",
   date: moment(),
   user: "john",
@@ -76,7 +80,7 @@ interface Activity_form_props {
   /**
    * If defined, it will put the form in edit mode
    */
-  edit_schedule_activity?: Schedule_activity
+  edit_activity?: Resource<Schedule_activity>
   /**
    * A reference to the parent modal submit button, to trigger the on submit event of the form.
    */
@@ -87,19 +91,20 @@ interface Activity_form_props {
   close_modal: () => void
 }
 const Activity_form: FC<Activity_form_props> = ({
-  edit_schedule_activity,
+  edit_activity,
   submit_button_ref,
   close_modal,
 }) => {
-  const { create } = use_api()
-  const edit_mode = !!edit_schedule_activity
+  const { create, edit } = use_api()
 
-  const [activity_schedule_data, set_activity_schedule_data] =
-    useState<Schedule_activity>(edit_schedule_activity ?? new_schedule_activity)
+  const [activity_data, set_activity_schedule_data] =
+    useState<Expanded_schedule_activity>(
+      edit_activity ? parse_edit_item(edit_activity) : new_schedule_activity
+    )
 
   const on_activity_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const type = event.target.value
-    
+
     set_activity_schedule_data((prev_state) => {
       return { ...prev_state, type }
     })
@@ -127,15 +132,22 @@ const Activity_form: FC<Activity_form_props> = ({
     })
   }
 
+  const edit_mode = !!edit_activity
   const on_submit: FormEventHandler = async (event) => {
     event.preventDefault()
 
-    await create("activity", { data: activity_schedule_data })
+    if (edit_mode) {
+      await edit(`activity/${edit_activity._id}`, {
+        data: activity_data,
+      })
+    } else {
+      await create("activity", { data: activity_data })
+    }
 
     close_modal()
   }
 
-  const { type, date, user, pitch } = activity_schedule_data
+  const { type, date, user, pitch } = activity_data
   return (
     <EuiForm component="form" onSubmit={on_submit}>
       <EuiFormRow>
@@ -170,6 +182,10 @@ const Activity_form: FC<Activity_form_props> = ({
       />
     </EuiForm>
   )
+}
+
+const parse_edit_item = (item: Schedule_activity): Expanded_schedule_activity => {
+  return { ...item, date: moment(item.date) }
 }
 
 export default Activity_form

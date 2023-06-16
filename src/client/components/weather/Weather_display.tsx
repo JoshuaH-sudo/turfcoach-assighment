@@ -78,15 +78,13 @@ const Weather_display: FC = () => {
   if (!weather_report)
     return <EuiLoadingSpinner size="xxl" style={{ margin: "auto" }} />
 
-  const size: ChartSize = [600, 200]
   return (
     <>
       {weather_report.weather.map((report) => (
         <img src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`} />
       ))}
 
-      {/*@ts-ignore the size is correct but will give a type error*/}
-      <Chart size={size}>
+      <Chart>
         <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
         <Metric
           id="metricId"

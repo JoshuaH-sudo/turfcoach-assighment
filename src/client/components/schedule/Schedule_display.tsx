@@ -17,6 +17,7 @@ const Schedule_display = () => {
   const { get, remove } = use_api()
   const [activities, set_activities] = useState<Resource<Schedule_activity>[]>([])
   const [show_form_modal, set_show_form_modal] = useState(false)
+  const [edit_activity, set_edit_activity] = useState<Resource<Schedule_activity>>()
 
   const actions: EuiTableActionsColumnType<Resource<Schedule_activity>> = {
     name: "Actions",
@@ -26,7 +27,10 @@ const Schedule_display = () => {
         description: "Edit this activity",
         type: "icon",
         icon: "pencil",
-        onClick: () => {},
+        onClick: (item) => {
+          set_show_form_modal(true)
+          set_edit_activity(item)
+        },
         "data-test-subj": "action-edit",
       },
       {
@@ -34,10 +38,12 @@ const Schedule_display = () => {
         description: "Delete this activity",
         type: "icon",
         icon: "trash",
-        onClick: (item) => {
-          remove(`activity/${item._id}`)
+        color: "danger",
+        onClick: async (item) => {
+          await remove(`activity/${item._id}`)
+          await get_activities()
         },
-        "data-test-subj": "action-edit",
+        "data-test-subj": "action-delete",
       },
     ],
   }
@@ -75,17 +81,21 @@ const Schedule_display = () => {
   }
 
   useEffect(() => {
-    get_schedule()
+    get_activities()
   }, [])
 
-  const get_schedule = async () => {
+  const get_activities = async () => {
     const results = await get<Resource<Schedule_activity>[]>("activity")
 
     set_activities(results.data)
   }
 
-  const close_modal = () => {
+  const close_modal = async () => {
+    if (edit_activity) {
+      set_edit_activity(undefined)
+    }
     set_show_form_modal(false)
+    await get_activities()
   }
 
   const open_modal = () => {
@@ -103,7 +113,9 @@ const Schedule_display = () => {
         sorting={sorting}
       />
 
-      {show_form_modal && <Activity_modal close_modal={close_modal} />}
+      {show_form_modal && (
+        <Activity_modal edit_activity={edit_activity} close_modal={close_modal} />
+      )}
     </>
   )
 }

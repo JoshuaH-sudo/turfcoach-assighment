@@ -68,7 +68,7 @@ export const delete_activity = async (
 
     await Activity.findByIdAndDelete(_id)
 
-    res.status(200)
+    res.status(200).send();
   } catch (error) {
     next(error)
   }
