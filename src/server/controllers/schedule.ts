@@ -21,14 +21,14 @@ export const get_schedule = async (
 }
 
 export const schedule_new_activity = async (
-  req: Request<{}, Schedule_activity, {}, {}>,
+  req: Request<{}, {}, { data: Schedule_activity }, {}>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     debug_log("Scheduling new activity")
-    debug_log(req.body)
-    const new_activity = await new Activity(req.body).save()
+    debug_log(req.body.data)
+    const new_activity = await new Activity(req.body.data).save()
 
     res.status(201).send(new_activity)
   } catch (error) {

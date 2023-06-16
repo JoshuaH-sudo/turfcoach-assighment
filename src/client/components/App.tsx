@@ -13,9 +13,9 @@ const App: FC = () => {
     <EuiProvider colorMode="dark">
       <EuiPage data-testid="app">
         <EuiPageBody>
-          <EuiPageSection>
+          {/* <EuiPageSection>
             <Weather_display />
-          </EuiPageSection>
+          </EuiPageSection> */}
           <EuiPageSection>
             <Schedule_display />
             <Activity_modal

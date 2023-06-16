@@ -20,16 +20,16 @@ const use_api = () => {
     }
   }
 
-  const get = async <T,>(url: string, config: AxiosRequestConfig = {}) => {
+  const get = async <T = void,>(url: string, config: AxiosRequestConfig = {}) => {
     const base = window.location.toString()
     const request_url = base + url
     return await response_wrapper<T>(axios.get(request_url, config))
   }
 
-  const post = async <T,>(url: string, config: AxiosRequestConfig = {}) => {
+  const post = async <T = void,>(url: string, body: AxiosRequestConfig = {}) => {
     const base = window.location.toString()
     const request_url = base + url
-    return await response_wrapper<T>(axios.post(request_url, config))
+    return await response_wrapper<T>(axios.post(request_url, body))
   }
 
   return { get, post }
