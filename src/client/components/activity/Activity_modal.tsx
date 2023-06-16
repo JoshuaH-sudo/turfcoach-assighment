@@ -7,6 +7,7 @@ import {
   EuiModalHeaderTitle,
 } from "@elastic/eui"
 import React from "react"
+import Activity_form from "./Activity_form"
 
 const Activity_modal = () => {
   const closeModal = () => {
@@ -15,11 +16,11 @@ const Activity_modal = () => {
   return (
     <EuiModal onClose={closeModal}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Add Activity</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>Schedule New Activity</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
-        
+        <Activity_form />
       </EuiModalBody>
 
       <EuiModalFooter>

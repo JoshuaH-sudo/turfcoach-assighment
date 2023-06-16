@@ -6,7 +6,7 @@ import {
   EuiSelectOption,
 } from "@elastic/eui"
 import moment, { Moment } from "moment"
-import React, { useState } from "react"
+import React, { ChangeEventHandler, FC, useState } from "react"
 
 export interface Schedule_activity {
   activity: string
@@ -64,25 +64,48 @@ const user_options: EuiSelectOption[] = [
   },
 ]
 
-const Activity_form = () => {
-  const [activity_schedule_data, set_activity_schedule_data] =
-    useState<Schedule_activity>({
-      activity: "mowing",
-      date: moment(),
-      user: "john",
-      pitch: "pitch_1",
-    })
-  // Select Activity
-  // Time and Date
-  // Task performer
-  // Select Pitch
-  // Can edit
-  // can delete
+const new_schedule_activity = {
+  activity: "mowing",
+  date: moment(),
+  user: "john",
+  pitch: "pitch_1",
+}
 
-  const on_activity_select = () => {}
-  const on_date_select = () => {}
-  const on_pitch_select = () => {}
-  const on_user_select = () => {}
+interface Activity_form_props {
+  edit_schedule_activity?: Schedule_activity
+}
+const Activity_form: FC<Activity_form_props> = ({ edit_schedule_activity }) => {
+  const edit_mode = !!edit_schedule_activity
+
+  const [activity_schedule_data, set_activity_schedule_data] =
+    useState<Schedule_activity>(edit_schedule_activity ?? new_schedule_activity)
+
+  const on_activity_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    const activity = event.target.value
+    set_activity_schedule_data((prev_state) => {
+      return { ...prev_state, activity }
+    })
+  }
+
+  const on_date_select = (date: Moment) => {
+    set_activity_schedule_data((prev_state) => {
+      return { ...prev_state, date }
+    })
+  }
+
+  const on_pitch_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    const pitch = event.target.value
+    set_activity_schedule_data((prev_state) => {
+      return { ...prev_state, pitch }
+    })
+  }
+
+  const on_user_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    const user = event.target.value
+    set_activity_schedule_data((prev_state) => {
+      return { ...prev_state, user }
+    })
+  }
 
   const { activity, date, user, pitch } = activity_schedule_data
   return (
