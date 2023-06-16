@@ -8,13 +8,14 @@ import fs from "fs"
 
 import app_router from "./routes/app"
 import weather_router from "./routes/weather"
-import debug from "debug"
 import { setup_pitch_collection } from "./models/pitch"
 import { setup_user_collection } from "./models/user"
 
 const { config } = require("dotenv")
 config()
 
+import debug from "debug"
+import error_handler from "./middleware/error_handler"
 const debugLog = debug("app:server:log")
 const errorLog = debug("app:server:error")
 
@@ -35,6 +36,8 @@ app.use(
 
 app.use("/", app_router)
 app.use("/weather", weather_router)
+
+app.use(error_handler)
 
 async function start_database() {
   debugLog("Connecting to database")
