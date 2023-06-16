@@ -35,6 +35,7 @@ const Activity_modal: FC<Activity_modal_props> = ({
         <Activity_form
           edit_schedule_activity={edit_schedule_activity}
           submit_button_ref={submit_button_ref}
+          close_modal={close_modal}
         />
       </EuiModalBody>
 

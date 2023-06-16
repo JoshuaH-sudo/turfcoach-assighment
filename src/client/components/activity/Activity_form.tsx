@@ -73,16 +73,23 @@ const new_schedule_activity: Schedule_activity = {
 }
 
 interface Activity_form_props {
+  /**
+   * If defined, it will put the form in edit mode
+   */
   edit_schedule_activity?: Schedule_activity
-
   /**
    * A reference to the parent modal submit button, to trigger the on submit event of the form.
    */
   submit_button_ref: React.MutableRefObject<HTMLButtonElement | undefined>
+  /**
+   * Close the parent modal
+   */
+  close_modal: () => void
 }
 const Activity_form: FC<Activity_form_props> = ({
   edit_schedule_activity,
   submit_button_ref,
+  close_modal
 }) => {
   const { post } = use_api()
   const edit_mode = !!edit_schedule_activity
@@ -120,6 +127,7 @@ const Activity_form: FC<Activity_form_props> = ({
   const on_submit: FormEventHandler = async (event) => {
     event.preventDefault()
     await post("schedule", { data: activity_schedule_data })
+    close_modal()
   }
 
   const { type, date, user, pitch } = activity_schedule_data
