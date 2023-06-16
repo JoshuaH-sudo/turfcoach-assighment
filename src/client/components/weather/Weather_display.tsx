@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react"
-import use_api from "../hooks/use_api"
+import use_api from "../../hooks/use_api"
 import {
   Chart,
   ChartSize,
