@@ -1,12 +1,12 @@
 # Turfcoach Scheduler App Assignment
 ## Setup
 ### Prerequisites: 
-Have yarn and docker installed on your machine.
-This application was designed to mainly be run on a Linux, WSL or equivalent OS/System
+1. Insure yarn and docker are installed on your machine.
+2. This application itself was designed to mainly be run on a Linux, WSL or equivalent OS/System but can be run in docker.
 
 ### Run outside of Docker
 - Clone repo
-- Have an instance of mongo running.
+- Have an instance of Mongo running.
 - Install dependencies: `yarn install`
 - Build app:
   - Development version run `yarn dev_build`

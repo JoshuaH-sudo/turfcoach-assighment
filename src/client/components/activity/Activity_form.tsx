@@ -89,9 +89,9 @@ interface Activity_form_props {
 const Activity_form: FC<Activity_form_props> = ({
   edit_schedule_activity,
   submit_button_ref,
-  close_modal
+  close_modal,
 }) => {
-  const { post } = use_api()
+  const { create } = use_api()
   const edit_mode = !!edit_schedule_activity
 
   const [activity_schedule_data, set_activity_schedule_data] =
@@ -99,6 +99,7 @@ const Activity_form: FC<Activity_form_props> = ({
 
   const on_activity_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const type = event.target.value
+    
     set_activity_schedule_data((prev_state) => {
       return { ...prev_state, type }
     })
@@ -112,6 +113,7 @@ const Activity_form: FC<Activity_form_props> = ({
 
   const on_pitch_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const pitch = event.target.value
+
     set_activity_schedule_data((prev_state) => {
       return { ...prev_state, pitch }
     })
@@ -119,6 +121,7 @@ const Activity_form: FC<Activity_form_props> = ({
 
   const on_user_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const user = event.target.value
+
     set_activity_schedule_data((prev_state) => {
       return { ...prev_state, user }
     })
@@ -126,7 +129,9 @@ const Activity_form: FC<Activity_form_props> = ({
 
   const on_submit: FormEventHandler = async (event) => {
     event.preventDefault()
-    await post("schedule", { data: activity_schedule_data })
+
+    await create("activity", { data: activity_schedule_data })
+
     close_modal()
   }
 

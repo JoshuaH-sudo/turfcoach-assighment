@@ -11,8 +11,7 @@ const use_api = () => {
       return await response
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const error_message =
-          error.response?.data.message ?? "Request Failed"
+        const error_message = error.response?.data.message ?? "Request Failed"
         throw error_message
       } else {
         throw error
@@ -26,13 +25,25 @@ const use_api = () => {
     return await response_wrapper<T>(axios.get(request_url, config))
   }
 
-  const post = async <T = void,>(url: string, body: AxiosRequestConfig = {}) => {
+  const create = async <T = void,>(url: string, config: AxiosRequestConfig = {}) => {
     const base = window.location.toString()
     const request_url = base + url
-    return await response_wrapper<T>(axios.post(request_url, body))
+    return await response_wrapper<T>(axios.post(request_url, config))
   }
 
-  return { get, post }
+  const edit = async <T = void,>(url: string, config: AxiosRequestConfig = {}) => {
+    const base = window.location.toString()
+    const request_url = base + url
+    return await response_wrapper<T>(axios.put(request_url, config))
+  }
+
+  const remove = async <T = void,>(url: string, config: AxiosRequestConfig = {}) => {
+    const base = window.location.toString()
+    const request_url = base + url
+    return await response_wrapper<T>(axios.delete(request_url, config))
+  }
+
+  return { get, create, edit, remove }
 }
 
 export default use_api

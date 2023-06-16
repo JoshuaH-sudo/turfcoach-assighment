@@ -6,23 +6,17 @@ import "@elastic/charts/dist/theme_dark.css"
 import { EuiPage, EuiPageBody, EuiPageSection, EuiProvider } from "@elastic/eui"
 import Weather_display from "./weather/Weather_display"
 import Schedule_display from "./schedule/Schedule_display"
-import Activity_modal from "./activity/Activity_modal"
 
 const App: FC = () => {
   return (
     <EuiProvider colorMode="dark">
-      <EuiPage data-testid="app">
+      <EuiPage data-testid="app" style={{ height: "100vh" }}>
         <EuiPageBody>
-          {/* <EuiPageSection>
+          <EuiPageSection style={{ height: "25%" }}>
             <Weather_display />
-          </EuiPageSection> */}
-          <EuiPageSection>
+          </EuiPageSection>
+          <EuiPageSection style={{ height: "75%" }}>
             <Schedule_display />
-            <Activity_modal
-              close_modal={() => {
-                return
-              }}
-            />
           </EuiPageSection>
         </EuiPageBody>
       </EuiPage>

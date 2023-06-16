@@ -11,8 +11,8 @@ router.get("/", get_activities)
 
 router.post("/", create_activity)
 
-router.put("/", edit_activity)
+router.put("/:_id", edit_activity)
 
-router.delete("/", delete_activity)
+router.delete("/:_id", delete_activity)
 
 export default router
