@@ -26,7 +26,13 @@ const use_api = () => {
     return await response_wrapper<T>(axios.get(request_url, config))
   }
 
-  return { get }
+  const post = async <T,>(url: string, config: AxiosRequestConfig = {}) => {
+    const base = window.location.toString()
+    const request_url = base + url
+    return await response_wrapper<T>(axios.post(request_url, config))
+  }
+
+  return { get, post }
 }
 
 export default use_api
