@@ -6,14 +6,15 @@ import {
   EuiSelectOption,
 } from "@elastic/eui"
 import moment, { Moment } from "moment"
-import React, { ChangeEventHandler, FC, FormEventHandler, LegacyRef, useState } from "react"
-
-export interface Schedule_activity {
-  activity: string
-  date: Moment
-  user: string
-  pitch: string
-}
+import React, {
+  ChangeEventHandler,
+  FC,
+  FormEventHandler,
+  LegacyRef,
+  useState,
+} from "react"
+import { Schedule_activity } from "../../../server/models/activity"
+import use_api from "../../hooks/use_api"
 
 const pitch_options: EuiSelectOption[] = [
   {
@@ -64,8 +65,8 @@ const user_options: EuiSelectOption[] = [
   },
 ]
 
-const new_schedule_activity = {
-  activity: "mowing",
+const new_schedule_activity: Schedule_activity = {
+  type: "mowing",
   date: moment(),
   user: "john",
   pitch: "pitch_1",
@@ -83,15 +84,16 @@ const Activity_form: FC<Activity_form_props> = ({
   edit_schedule_activity,
   submit_button_ref,
 }) => {
+  const { post } = use_api()
   const edit_mode = !!edit_schedule_activity
 
   const [activity_schedule_data, set_activity_schedule_data] =
     useState<Schedule_activity>(edit_schedule_activity ?? new_schedule_activity)
 
   const on_activity_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
-    const activity = event.target.value
+    const type = event.target.value
     set_activity_schedule_data((prev_state) => {
-      return { ...prev_state, activity }
+      return { ...prev_state, type }
     })
   }
 
@@ -115,18 +117,18 @@ const Activity_form: FC<Activity_form_props> = ({
     })
   }
 
-  const on_submit:FormEventHandler = (event) => {
-    event.preventDefault();
-    alert(JSON.stringify(activity_schedule_data))
+  const on_submit: FormEventHandler = async (event) => {
+    event.preventDefault()
+    await post("schedule", { data: activity_schedule_data })
   }
 
-  const { activity, date, user, pitch } = activity_schedule_data
+  const { type, date, user, pitch } = activity_schedule_data
   return (
     <EuiForm component="form" onSubmit={on_submit}>
       <EuiFormRow>
         <EuiSelect
           options={activity_options}
-          value={activity}
+          value={type}
           onChange={on_activity_select}
         />
       </EuiFormRow>
