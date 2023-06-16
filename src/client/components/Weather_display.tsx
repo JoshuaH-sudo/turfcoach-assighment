@@ -62,7 +62,9 @@ const Weather_display: FC = () => {
   }
 
   const on_position_error: PositionErrorCallback = (error) => {
-    alert(error)
+    if (error.code === error.PERMISSION_DENIED) {
+      alert("You must allow location to fetch correct weather data")
+    }
   }
 
   useEffect(() => {
@@ -79,7 +81,7 @@ const Weather_display: FC = () => {
   const size: ChartSize = [600, 200]
   return (
     <>
-      {/*@ts-ignore*/}
+      {/*@ts-ignore the size is correct but will give a type error*/}
       <Chart size={size}>
         <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
         <Metric
