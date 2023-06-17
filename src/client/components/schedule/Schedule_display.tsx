@@ -1,6 +1,8 @@
 import {
   EuiBasicTableColumn,
   EuiButton,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiInMemoryTable,
   EuiInMemoryTableProps,
   EuiTableActionsColumnType,
@@ -104,7 +106,11 @@ const Schedule_display = () => {
 
   return (
     <>
-      <EuiButton onClick={open_modal}>Schedule New Activity</EuiButton>
+      <EuiFlexGroup direction="rowReverse">
+        <EuiFlexItem>
+          <EuiButton onClick={open_modal}>Schedule New Activity</EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
 
       <EuiInMemoryTable<Resource<Schedule_activity>>
         items={activities}

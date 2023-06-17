@@ -9,7 +9,9 @@ import {
   Settings,
 } from "@elastic/charts"
 import { EUI_CHARTS_THEME_DARK } from "@elastic/eui/dist/eui_charts_theme"
-import { EuiLoadingSpinner } from "@elastic/eui"
+import { EuiGlobalStyles, EuiLoadingSpinner } from "@elastic/eui"
+import { Global, Interpolation, Theme } from "@emotion/react"
+import { number } from "prop-types"
 
 interface Weather_report {
   description: string
@@ -40,6 +42,10 @@ interface Current_Weather {
    */
   clouds: {
     all: number
+  }
+  rain?: {
+    "1h": number
+    "3h": number
   }
 }
 
@@ -75,14 +81,23 @@ const Weather_display: FC = () => {
     navigator.geolocation.getCurrentPosition(get_location_data, on_position_error)
   }, [])
 
-  if (!weather_report)
+  if (!weather_report) {
     return <EuiLoadingSpinner size="xxl" style={{ margin: "auto" }} />
+  }
 
+  const chart_size: Interpolation<Theme> = {
+    ".echChart": {
+      width: "100%",
+      height: "50%",
+    },
+  }
   return (
     <>
       {weather_report.weather.map((report) => (
         <img src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`} />
       ))}
+
+      <Global styles={chart_size} />
 
       <Chart>
         <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
@@ -91,29 +106,38 @@ const Weather_display: FC = () => {
           data={[
             [
               {
-                color: "#F1D86F",
-                title: "Humidity",
-                value: weather_report?.main.humidity ?? 0,
-                domainMax: 100,
+                color: "#6699FF",
+                title: "Rain 1h",
+                value: weather_report.rain?.["1h"] ?? 0,
+                //On average 50mm of rain is considered violent levels.
+                //https://www.baranidesign.com/faq-articles/2020/1/19/rain-rate-intensity-classification
+                domainMax: 50,
                 progressBarDirection: LayoutDirection.Vertical,
-                valueFormatter: (v) => `${v}%`,
-              },
-              {
-                color: "#F1D86F",
-                title: "Cloud Cover",
-                value: weather_report?.clouds.all ?? 0,
-                domainMax: 100,
-                progressBarDirection: LayoutDirection.Vertical,
-                valueFormatter: (v) => `${v}%`,
-              },
-              {
-                color: "#8CB2CD",
-                title: "Temperature",
                 extra: (
                   <span>
-                    Feels like{" "}
-                    <strong>{`${weather_report.main.feels_like}`}&deg;</strong>
+                    Rain 3h:{" "}
+                    <strong>{`${weather_report.rain?.["3h"] ?? 0}`}mm</strong>
                   </span>
+                ),
+                valueFormatter: (v) => `${v}mm`,
+              },
+              {
+                color: get_temperature_colour(weather_report.main.temp),
+                title: "Temperature",
+                extra: (
+                  <>
+                    <span>
+                      Feels like{" "}
+                      <strong>{`${weather_report.main.feels_like}`}&deg;</strong>
+                    </span>
+                    <span>
+                      Max <strong>{`${weather_report.main.temp_max}`}&deg;</strong>
+                    </span>
+                    <span>
+                      Min
+                      <strong>{`${weather_report.main.temp_min}`}&deg;</strong>
+                    </span>
+                  </>
                 ),
                 value: weather_report.main.temp,
                 valueFormatter: (v) => `${v.toFixed(2)}°`,
@@ -126,4 +150,11 @@ const Weather_display: FC = () => {
   )
 }
 
+const get_temperature_colour = (degrees: number) => {
+  if (degrees <= -10) return "#0033FF"
+  if (degrees <= 10) return "#CC00FF"
+  if (degrees <= 15) return "#0033FF"
+  if (degrees <= 24) return "#FFFF00"
+  else return "#FF0033"
+}
 export default Weather_display
