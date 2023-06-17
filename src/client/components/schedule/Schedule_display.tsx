@@ -103,6 +103,7 @@ const Schedule_display = () => {
           //Delete a event with the middle mouse button or click while holding the shift key
           if (jsEvent.button === 1 || jsEvent.shiftKey) {
             delete_scheduled_activity(event.id)
+            return;
           }
 
           edit_scheduled_activity(event.id)
