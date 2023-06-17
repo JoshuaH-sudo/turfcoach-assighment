@@ -33,6 +33,7 @@
     "@emotion/react": "^11.10.6",
     "@fullcalendar/core": "^6.1.8",
     "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/react": "^6.1.8",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.0",

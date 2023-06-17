@@ -10,15 +10,18 @@ import React, { FC, useRef } from "react"
 import Activity_form from "./Activity_form"
 import { Schedule_activity } from "../../../server/models/activity"
 import { Resource } from "../../../common/types"
+import { Moment } from "moment"
 
 interface Activity_modal_props {
   close_modal: () => void
   edit_activity?: Resource<Schedule_activity>
+  initial_date?: Moment
 }
 
 const Activity_modal: FC<Activity_modal_props> = ({
   close_modal,
   edit_activity,
+  initial_date,
 }) => {
   const edit_mode = !!edit_activity
   const submit_button_ref = useRef<HTMLButtonElement>()
@@ -38,6 +41,7 @@ const Activity_modal: FC<Activity_modal_props> = ({
       <EuiModalBody>
         <Activity_form
           edit_activity={edit_activity}
+          initial_date={initial_date}
           submit_button_ref={submit_button_ref}
           close_modal={close_modal}
         />

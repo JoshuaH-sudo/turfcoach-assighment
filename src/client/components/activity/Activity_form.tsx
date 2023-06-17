@@ -12,6 +12,7 @@ import React, {
   FormEventHandler,
   LegacyRef,
   useContext,
+  useEffect,
   useState,
 } from "react"
 import {
@@ -20,7 +21,6 @@ import {
 } from "../../../server/models/activity"
 import use_api from "../../hooks/use_api"
 import { Resource } from "../../../common/types"
-import axios from "axios"
 import { Notification_context } from "../Notification_provider"
 
 const pitch_options: EuiSelectOption[] = [
@@ -85,6 +85,10 @@ interface Activity_form_props {
    */
   edit_activity?: Resource<Schedule_activity>
   /**
+   * Initial date to prefill the form with
+   */
+  initial_date?: Moment
+  /**
    * A reference to the parent modal submit button, to trigger the on submit event of the form.
    */
   submit_button_ref: React.MutableRefObject<HTMLButtonElement | undefined>
@@ -95,6 +99,7 @@ interface Activity_form_props {
 }
 const Activity_form: FC<Activity_form_props> = ({
   edit_activity,
+  initial_date,
   submit_button_ref,
   close_modal,
 }) => {
@@ -103,9 +108,21 @@ const Activity_form: FC<Activity_form_props> = ({
     useContext(Notification_context)
 
   const [activity_data, set_activity_schedule_data] =
-    useState<Expanded_schedule_activity>(
-      edit_activity ? parse_edit_item(edit_activity) : new_schedule_activity
-    )
+    useState<Expanded_schedule_activity>(new_schedule_activity)
+
+  useEffect(() => {
+    let initial_form_state: Expanded_schedule_activity = new_schedule_activity
+
+    if (edit_activity) {
+      initial_form_state = parse_edit_item(edit_activity)
+    }
+
+    if (initial_date) {
+      initial_form_state.date = initial_date
+    }
+
+    set_activity_schedule_data(initial_form_state)
+  }, [edit_activity, initial_date])
 
   const on_activity_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const type = event.target.value

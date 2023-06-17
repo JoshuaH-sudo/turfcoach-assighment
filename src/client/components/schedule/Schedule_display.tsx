@@ -5,41 +5,24 @@ import use_api from "../../hooks/use_api"
 import Activity_modal from "../activity/Activity_modal"
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
+import interactionPlugin from "@fullcalendar/interaction"
+
+import { capitalize } from "../../../common/utils"
+import { Moment } from "moment"
+import moment from "moment"
+
+interface Form_settings {
+  show: boolean
+  edit_activity?: Resource<Schedule_activity>
+  initial_date?: Moment
+}
 
 const Schedule_display = () => {
   const { get, remove } = use_api()
   const [activities, set_activities] = useState<Resource<Schedule_activity>[]>([])
-  const [show_form_modal, set_show_form_modal] = useState(false)
-  const [edit_activity, set_edit_activity] = useState<Resource<Schedule_activity>>()
-
-  // const actions: EuiTableActionsColumnType<Resource<Schedule_activity>> = {
-  //   name: "Actions",
-  //   actions: [
-  //     {
-  //       name: "Edit",
-  //       description: "Edit this activity",
-  //       type: "icon",
-  //       icon: "pencil",
-  //       onClick: (item) => {
-  //         set_show_form_modal(true)
-  //         set_edit_activity(item)
-  //       },
-  //       "data-test-subj": "action-edit",
-  //     },
-  //     {
-  //       name: "Delete",
-  //       description: "Delete this activity",
-  //       type: "icon",
-  //       icon: "trash",
-  //       color: "danger",
-  //       onClick: async (item) => {
-  //         await remove(`activity/${item._id}`)
-  //         await get_activities()
-  //       },
-  //       "data-test-subj": "action-delete",
-  //     },
-  //   ],
-  // }
+  const [form_settings, set_form_settings] = useState<Form_settings>({
+    show: false,
+  })
 
   useEffect(() => {
     get_activities()
@@ -51,22 +34,41 @@ const Schedule_display = () => {
     set_activities(results.data)
   }
 
-  const close_modal = async () => {
-    if (edit_activity) {
-      set_edit_activity(undefined)
-    }
-    set_show_form_modal(false)
+  const edit_scheduled_activity = (search_id: string) => {
+    const found_activity = activities.find((activity) => activity._id === search_id)
+
+    if (!found_activity)
+      throw "Could not find activity to edit with provided search id"
+
+    open_modal({ show: true, edit_activity: found_activity })
+  }
+
+  const delete_scheduled_activity = async (delete_id: string) => {
+    await remove(`activity/${delete_id}`)
     await get_activities()
   }
 
-  const open_modal = () => {
-    set_show_form_modal(true)
+  const close_modal = async () => {
+    set_form_settings({ show: false })
+    await get_activities()
+  }
+
+  const open_modal = (config: Form_settings) => {
+    set_form_settings({ ...config })
   }
 
   const calendar_events = activities.map((activity) => {
+    const { _id, user, type, date, pitch } = activity
+
+    const title = `${capitalize(user)} ${capitalize(type)} ${capitalize(
+      pitch
+    ).replaceAll("_", " ")}`
+
     const event = {
-      title: activity.type,
-      date: activity.date,
+      id: _id,
+      title,
+      display: "block",
+      date,
     }
     return event
   })
@@ -74,13 +76,29 @@ const Schedule_display = () => {
     <>
       <FullCalendar
         height={"100%"}
-        plugins={[dayGridPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={calendar_events}
+        dateClick={({ dateStr }) =>
+          open_modal({ show: true, initial_date: moment(dateStr) })
+        }
+        //FullCalendar does seem to export its types so need to define props inline.
+        eventClick={({ event, jsEvent }) => {
+          if (jsEvent.button === 3) {
+            jsEvent.preventDefault()
+            delete_scheduled_activity(event.id)
+          }
+
+          edit_scheduled_activity(event.id)
+        }}
       />
 
-      {show_form_modal && (
-        <Activity_modal edit_activity={edit_activity} close_modal={close_modal} />
+      {form_settings.show && (
+        <Activity_modal
+          edit_activity={form_settings.edit_activity}
+          initial_date={form_settings.initial_date}
+          close_modal={close_modal}
+        />
       )}
     </>
   )
