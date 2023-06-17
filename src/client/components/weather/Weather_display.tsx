@@ -10,13 +10,16 @@ import {
 } from "@elastic/charts"
 import { EUI_CHARTS_THEME_DARK } from "@elastic/eui/dist/eui_charts_theme"
 import {
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiGlobalStyles,
   EuiLoadingSpinner,
   EuiSkeletonText,
   useEuiTheme,
 } from "@elastic/eui"
 import { Global, Interpolation, Theme } from "@emotion/react"
-import { number } from "prop-types"
+import { use_rain_metric } from "./hooks/use_rain_metric"
+import { use_temperature_metric } from "./hooks/use_temperature_metric"
 
 interface Weather_report {
   description: string
@@ -27,7 +30,7 @@ interface Weather_report {
 /**
  * A partial type of only relevant data returned from getting the current weather
  */
-interface Current_Weather {
+export interface Current_Weather {
   /**
    * Temperature information
    */
@@ -48,6 +51,9 @@ interface Current_Weather {
   clouds: {
     all: number
   }
+  /**
+   * Expected rain in the next 1 - 3 hours
+   */
   rain?: {
     "1h": number
     "3h": number
@@ -80,107 +86,50 @@ const Weather_display: FC = () => {
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      console.error(`Your browser doesn't support Geolocation`)
+      alert(`Your browser doesn't support Geolocation`)
     }
 
     navigator.geolocation.getCurrentPosition(get_location_data, on_position_error)
   }, [])
 
-  let weather_icons: ReactNode = <EuiLoadingSpinner size="xxl" style={{ padding: "40px" }}/>
+  let weather_icons: ReactNode = (
+    <EuiLoadingSpinner size="xxl" style={{ padding: "40px", margin: "auto" }} />
+  )
   if (weather_report) {
     weather_icons = weather_report.weather.map((report) => (
-      <img src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`} />
+      <EuiFlexItem grow={false}>
+        <img
+          key={report.id}
+          style={{ margin: "auto" }}
+          src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`}
+        />
+      </EuiFlexItem>
     ))
   }
 
-  //Setting the height in the Chart size prop does not work for some reason, so setting a css style
-  const chart_size: Interpolation<Theme> = {
-    ".echChart": {
-      width: "100%",
-      height: "60%",
-    },
-  }
+  const rain_metric = use_rain_metric(weather_report)
+  const temperature_metric = use_temperature_metric(weather_report)
 
-  const { euiTheme } = useEuiTheme()
   return (
     <>
-      <Global styles={chart_size} />
+      <EuiFlexGroup
+        style={{
+          height: "100%",
+          width: "100%",
+          paddingLeft: "10em",
+          paddingRight: "10em",
+        }}
+      >
+        {weather_icons}
 
-      {weather_icons}
-
-      <Chart>
-        <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
-        <Metric
-          id="metricId"
-          data={[
-            [
-              {
-                color: "#6699FF",
-                title: "Rain 1h",
-                value: weather_report?.rain?.["1h"] ?? 0,
-                //On average 50mm of rain is considered violent levels.
-                //https://www.baranidesign.com/faq-articles/2020/1/19/rain-rate-intensity-classification
-                domainMax: 50,
-                progressBarDirection: LayoutDirection.Vertical,
-                extra: (
-                  <EuiSkeletonText lines={1} size="m" isLoading={!weather_report}>
-                    <span>
-                      Rain 3h:{" "}
-                      <strong>{`${weather_report?.rain?.["3h"] ?? 0}`}mm</strong>
-                    </span>
-                  </EuiSkeletonText>
-                ),
-                valueFormatter: (v) => `${v}mm`,
-              },
-              {
-                color: weather_report
-                  ? get_temperature_colour(weather_report.main.temp)
-                  : euiTheme.colors.lightShade,
-                title: "Temperature",
-                extra: (
-                  <EuiSkeletonText lines={3} size="s" isLoading={!weather_report}>
-                    <div>
-                      <span>
-                        Min
-                        <strong>{`${weather_report?.main.temp_min}`}&deg;</strong>
-                      </span>
-                    </div>
-                    <div>
-                      <span>
-                        Max{" "}
-                        <strong>{`${weather_report?.main.temp_max}`}&deg;</strong>
-                      </span>
-                    </div>
-                    <div>
-                      <span>
-                        Feels like{" "}
-                        <strong>{`${weather_report?.main.feels_like}`}&deg;</strong>
-                      </span>
-                    </div>
-                  </EuiSkeletonText>
-                ),
-                value: weather_report ? weather_report.main.temp : 0,
-                valueFormatter: (v) => `${v.toFixed(2)}°`,
-              },
-            ],
-          ]}
-        />
-      </Chart>
+        <EuiFlexItem>
+          <Chart>
+            <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
+            <Metric id="metricId" data={[[rain_metric, temperature_metric]]} />
+          </Chart>
+        </EuiFlexItem>
+      </EuiFlexGroup>
     </>
   )
-}
-
-/**
- * Will give a colour that matches to the temperature provided.
- *
- * @param degrees
- * @returns A hex colour code
- */
-const get_temperature_colour = (degrees: number) => {
-  if (degrees <= -10) return "#0033FF"
-  if (degrees <= 10) return "#CC00FF"
-  if (degrees <= 15) return "#0033FF"
-  if (degrees <= 24) return "#FFFF00"
-  else return "#FF0033"
 }
 export default Weather_display

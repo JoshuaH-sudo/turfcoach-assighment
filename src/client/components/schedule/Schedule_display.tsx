@@ -107,7 +107,7 @@ const Schedule_display = () => {
   return (
     <>
       <EuiFlexGroup direction="rowReverse">
-        <EuiFlexItem>
+        <EuiFlexItem grow={false}>
           <EuiButton onClick={open_modal}>Schedule New Activity</EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>

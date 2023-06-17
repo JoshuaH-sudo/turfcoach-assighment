@@ -24,14 +24,16 @@ const fill_panel: Interpolation<Theme> = {
 
 const weather_section: Interpolation<Theme> = {
   "&": {
-    height: "50%",
+    height: "20em",
+    paddingBottom: 0
   },
   ...fill_panel,
 }
 
+// Schedule section should take up remaining space
 const schedule_section: Interpolation<Theme> = {
   "&": {
-    height: "50%",
+    height: "100%",
   },
   ...fill_panel,
 }
@@ -48,7 +50,9 @@ const App: FC = () => {
           </EuiPageSection>
 
           <EuiPageSection css={schedule_section}>
-            <EuiPanel style={{ height: "100" }}>
+            <EuiPanel
+              style={{ height: "100", overflowY: "scroll", scrollbarWidth: "thin" }}
+            >
               <Schedule_display />
             </EuiPanel>
           </EuiPageSection>
