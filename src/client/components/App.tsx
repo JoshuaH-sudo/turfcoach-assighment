@@ -44,13 +44,13 @@ const App: FC = () => {
       <Notification_provider>
         <EuiPage data-testid="app" style={{ height: "100vh" }}>
           <EuiPageBody>
-            <EuiPageSection css={weather_section}>
+            <EuiPageSection grow={false} css={weather_section}>
               <EuiPanel style={{ height: "100" }}>
                 <Weather_display />
               </EuiPanel>
             </EuiPageSection>
 
-            <EuiPageSection css={schedule_section}>
+            <EuiPageSection grow={true} css={schedule_section}>
               <EuiPanel
                 style={{
                   height: "100",

@@ -1,19 +1,10 @@
-import {
-  EuiBasicTableColumn,
-  EuiButton,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiInMemoryTable,
-  EuiInMemoryTableProps,
-  EuiTableActionsColumnType,
-} from "@elastic/eui"
 import React, { useEffect, useState } from "react"
 import { Schedule_activity } from "../../../server/models/activity"
 import { Resource } from "../../../common/types"
 import use_api from "../../hooks/use_api"
-import moment from "moment"
-import { capitalize_first_letter } from "../../../common/utils"
 import Activity_modal from "../activity/Activity_modal"
+import FullCalendar from "@fullcalendar/react"
+import dayGridPlugin from "@fullcalendar/daygrid"
 
 const Schedule_display = () => {
   const { get, remove } = use_api()
@@ -21,66 +12,34 @@ const Schedule_display = () => {
   const [show_form_modal, set_show_form_modal] = useState(false)
   const [edit_activity, set_edit_activity] = useState<Resource<Schedule_activity>>()
 
-  const actions: EuiTableActionsColumnType<Resource<Schedule_activity>> = {
-    name: "Actions",
-    actions: [
-      {
-        name: "Edit",
-        description: "Edit this activity",
-        type: "icon",
-        icon: "pencil",
-        onClick: (item) => {
-          set_show_form_modal(true)
-          set_edit_activity(item)
-        },
-        "data-test-subj": "action-edit",
-      },
-      {
-        name: "Delete",
-        description: "Delete this activity",
-        type: "icon",
-        icon: "trash",
-        color: "danger",
-        onClick: async (item) => {
-          await remove(`activity/${item._id}`)
-          await get_activities()
-        },
-        "data-test-subj": "action-delete",
-      },
-    ],
-  }
-
-  const columns: EuiBasicTableColumn<Resource<Schedule_activity>>[] = [
-    {
-      name: "Date",
-      field: "date",
-      //Date would be saved a string and need to converted to a date object
-      render: (date: string) => moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a"),
-    },
-    {
-      name: "Activity",
-      field: "type",
-      render: (type: string) => capitalize_first_letter(type),
-    },
-    {
-      name: "Task performer",
-      field: "user",
-      render: (user: string) => capitalize_first_letter(user),
-    },
-    {
-      name: "Pitch",
-      field: "pitch",
-      render: (pitch: string) => capitalize_first_letter(pitch).replaceAll("_", " "),
-    },
-    actions,
-  ]
-
-  const sorting: EuiInMemoryTableProps<Schedule_activity>["sorting"] = {
-    sort: {
-      direction: "asc",
-      field: "date",
-    },
-  }
+  // const actions: EuiTableActionsColumnType<Resource<Schedule_activity>> = {
+  //   name: "Actions",
+  //   actions: [
+  //     {
+  //       name: "Edit",
+  //       description: "Edit this activity",
+  //       type: "icon",
+  //       icon: "pencil",
+  //       onClick: (item) => {
+  //         set_show_form_modal(true)
+  //         set_edit_activity(item)
+  //       },
+  //       "data-test-subj": "action-edit",
+  //     },
+  //     {
+  //       name: "Delete",
+  //       description: "Delete this activity",
+  //       type: "icon",
+  //       icon: "trash",
+  //       color: "danger",
+  //       onClick: async (item) => {
+  //         await remove(`activity/${item._id}`)
+  //         await get_activities()
+  //       },
+  //       "data-test-subj": "action-delete",
+  //     },
+  //   ],
+  // }
 
   useEffect(() => {
     get_activities()
@@ -104,19 +63,20 @@ const Schedule_display = () => {
     set_show_form_modal(true)
   }
 
+  const calendar_events = activities.map((activity) => {
+    const event = {
+      title: activity.type,
+      date: activity.date,
+    }
+    return event
+  })
   return (
     <>
-      <EuiFlexGroup direction="rowReverse">
-        <EuiFlexItem grow={false}>
-          <EuiButton onClick={open_modal}>Schedule New Activity</EuiButton>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-
-      <EuiInMemoryTable<Resource<Schedule_activity>>
-        items={activities}
-        columns={columns}
-        pagination={true}
-        sorting={sorting}
+      <FullCalendar
+        height={"100%"}
+        plugins={[dayGridPlugin]}
+        initialView="dayGridMonth"
+        events={calendar_events}
       />
 
       {show_form_modal && (
