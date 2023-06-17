@@ -2,7 +2,6 @@ import React from "react"
 import { FC } from "react"
 import "@elastic/eui/dist/eui_theme_dark.css"
 import "@elastic/charts/dist/theme_dark.css"
-// import "../assets/imports.css"
 import {
   EuiPage,
   EuiPageBody,
