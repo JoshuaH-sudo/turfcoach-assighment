@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, ReactNode, useEffect, useState } from "react"
 import use_api from "../../hooks/use_api"
 import {
   Chart,
@@ -9,7 +9,12 @@ import {
   Settings,
 } from "@elastic/charts"
 import { EUI_CHARTS_THEME_DARK } from "@elastic/eui/dist/eui_charts_theme"
-import { EuiGlobalStyles, EuiLoadingSpinner } from "@elastic/eui"
+import {
+  EuiGlobalStyles,
+  EuiLoadingSpinner,
+  EuiSkeletonText,
+  useEuiTheme,
+} from "@elastic/eui"
 import { Global, Interpolation, Theme } from "@emotion/react"
 import { number } from "prop-types"
 
@@ -81,23 +86,27 @@ const Weather_display: FC = () => {
     navigator.geolocation.getCurrentPosition(get_location_data, on_position_error)
   }, [])
 
-  if (!weather_report) {
-    return <EuiLoadingSpinner size="xxl" style={{ margin: "auto" }} />
+  let weather_icons: ReactNode = <EuiLoadingSpinner size="xxl" style={{ padding: "40px" }}/>
+  if (weather_report) {
+    weather_icons = weather_report.weather.map((report) => (
+      <img src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`} />
+    ))
   }
 
+  //Setting the height in the Chart size prop does not work for some reason, so setting a css style
   const chart_size: Interpolation<Theme> = {
     ".echChart": {
       width: "100%",
-      height: "50%",
+      height: "60%",
     },
   }
+
+  const { euiTheme } = useEuiTheme()
   return (
     <>
-      {weather_report.weather.map((report) => (
-        <img src={`https://openweathermap.org/img/wn/${report.icon}@2x.png`} />
-      ))}
-
       <Global styles={chart_size} />
+
+      {weather_icons}
 
       <Chart>
         <Settings baseTheme={DARK_THEME} theme={EUI_CHARTS_THEME_DARK.theme} />
@@ -108,38 +117,49 @@ const Weather_display: FC = () => {
               {
                 color: "#6699FF",
                 title: "Rain 1h",
-                value: weather_report.rain?.["1h"] ?? 0,
+                value: weather_report?.rain?.["1h"] ?? 0,
                 //On average 50mm of rain is considered violent levels.
                 //https://www.baranidesign.com/faq-articles/2020/1/19/rain-rate-intensity-classification
                 domainMax: 50,
                 progressBarDirection: LayoutDirection.Vertical,
                 extra: (
-                  <span>
-                    Rain 3h:{" "}
-                    <strong>{`${weather_report.rain?.["3h"] ?? 0}`}mm</strong>
-                  </span>
+                  <EuiSkeletonText lines={1} size="m" isLoading={!weather_report}>
+                    <span>
+                      Rain 3h:{" "}
+                      <strong>{`${weather_report?.rain?.["3h"] ?? 0}`}mm</strong>
+                    </span>
+                  </EuiSkeletonText>
                 ),
                 valueFormatter: (v) => `${v}mm`,
               },
               {
-                color: get_temperature_colour(weather_report.main.temp),
+                color: weather_report
+                  ? get_temperature_colour(weather_report.main.temp)
+                  : euiTheme.colors.lightShade,
                 title: "Temperature",
                 extra: (
-                  <>
-                    <span>
-                      Feels like{" "}
-                      <strong>{`${weather_report.main.feels_like}`}&deg;</strong>
-                    </span>
-                    <span>
-                      Max <strong>{`${weather_report.main.temp_max}`}&deg;</strong>
-                    </span>
-                    <span>
-                      Min
-                      <strong>{`${weather_report.main.temp_min}`}&deg;</strong>
-                    </span>
-                  </>
+                  <EuiSkeletonText lines={3} size="s" isLoading={!weather_report}>
+                    <div>
+                      <span>
+                        Min
+                        <strong>{`${weather_report?.main.temp_min}`}&deg;</strong>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Max{" "}
+                        <strong>{`${weather_report?.main.temp_max}`}&deg;</strong>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Feels like{" "}
+                        <strong>{`${weather_report?.main.feels_like}`}&deg;</strong>
+                      </span>
+                    </div>
+                  </EuiSkeletonText>
                 ),
-                value: weather_report.main.temp,
+                value: weather_report ? weather_report.main.temp : 0,
                 valueFormatter: (v) => `${v.toFixed(2)}°`,
               },
             ],
@@ -150,6 +170,12 @@ const Weather_display: FC = () => {
   )
 }
 
+/**
+ * Will give a colour that matches to the temperature provided.
+ *
+ * @param degrees
+ * @returns A hex colour code
+ */
 const get_temperature_colour = (degrees: number) => {
   if (degrees <= -10) return "#0033FF"
   if (degrees <= 10) return "#CC00FF"
