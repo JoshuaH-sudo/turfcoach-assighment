@@ -11,6 +11,7 @@ import React, {
   FC,
   FormEventHandler,
   LegacyRef,
+  useContext,
   useState,
 } from "react"
 import {
@@ -19,6 +20,8 @@ import {
 } from "../../../server/models/activity"
 import use_api from "../../hooks/use_api"
 import { Resource } from "../../../common/types"
+import axios from "axios"
+import { Notification_context } from "../Notification_provider"
 
 const pitch_options: EuiSelectOption[] = [
   {
@@ -96,6 +99,8 @@ const Activity_form: FC<Activity_form_props> = ({
   close_modal,
 }) => {
   const { create, edit } = use_api()
+  const { create_success_toast, create_error_toast } =
+    useContext(Notification_context)
 
   const [activity_data, set_activity_schedule_data] =
     useState<Expanded_schedule_activity>(
@@ -137,14 +142,31 @@ const Activity_form: FC<Activity_form_props> = ({
     event.preventDefault()
 
     if (edit_mode) {
-      await edit(`activity/${edit_activity._id}`, {
+      await request_edit_activity(edit_activity._id)
+    } else {
+      await request_create_activity()
+    }
+    close_modal()
+  }
+
+  const request_edit_activity = async (edit_id: string) => {
+    try {
+      await edit(`activity/${edit_id}`, {
         data: activity_data,
       })
-    } else {
-      await create("activity", { data: activity_data })
+      create_success_toast("Activity Edited")
+    } catch (error) {
+      create_error_toast("Failed To Edit Activity", error as string)
     }
+  }
 
-    close_modal()
+  const request_create_activity = async () => {
+    try {
+      await create("activity", { data: activity_data })
+      create_success_toast("Activity Scheduled")
+    } catch (error) {
+      create_error_toast("Failed To Schedule Activity", error as string)
+    }
   }
 
   const { type, date, user, pitch } = activity_data
