@@ -72,9 +72,9 @@ const user_options: EuiSelectOption[] = [
   },
 ]
 
-const new_schedule_activity: Expanded_schedule_activity = {
+const new_schedule_activity: Schedule_activity = {
   type: "mowing",
-  date: moment(),
+  date: moment().toString(),
   user: "john",
   pitch: "pitch_1",
 }
@@ -87,7 +87,7 @@ interface Activity_form_props {
   /**
    * Initial date to prefill the form with
    */
-  initial_date?: Moment
+  initial_date?: string
   /**
    * A reference to the parent modal submit button, to trigger the on submit event of the form.
    */
@@ -107,22 +107,15 @@ const Activity_form: FC<Activity_form_props> = ({
   const { create_success_toast, create_error_toast } =
     useContext(Notification_context)
 
-  const [activity_data, set_activity_schedule_data] =
-    useState<Expanded_schedule_activity>(new_schedule_activity)
+  const [activity_data, set_activity_schedule_data] = useState<Schedule_activity>(
+    edit_activity ?? new_schedule_activity
+  )
 
   useEffect(() => {
-    let initial_form_state: Expanded_schedule_activity = new_schedule_activity
-
-    if (edit_activity) {
-      initial_form_state = parse_edit_item(edit_activity)
-    }
-
     if (initial_date) {
-      initial_form_state.date = initial_date
+      set_activity_schedule_data({ ...activity_data, date: initial_date })
     }
-
-    set_activity_schedule_data(initial_form_state)
-  }, [edit_activity, initial_date])
+  }, [initial_date])
 
   const on_activity_select: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const type = event.target.value
@@ -134,7 +127,7 @@ const Activity_form: FC<Activity_form_props> = ({
 
   const on_date_select = (date: Moment) => {
     set_activity_schedule_data((prev_state) => {
-      return { ...prev_state, date }
+      return { ...prev_state, date: date.toString() }
     })
   }
 
@@ -198,7 +191,11 @@ const Activity_form: FC<Activity_form_props> = ({
       </EuiFormRow>
 
       <EuiFormRow>
-        <EuiDatePicker showTimeSelect selected={date} onChange={on_date_select} />
+        <EuiDatePicker
+          showTimeSelect
+          selected={moment(date)}
+          onChange={on_date_select}
+        />
       </EuiFormRow>
 
       <EuiFormRow>
@@ -221,10 +218,6 @@ const Activity_form: FC<Activity_form_props> = ({
       />
     </EuiForm>
   )
-}
-
-const parse_edit_item = (item: Schedule_activity): Expanded_schedule_activity => {
-  return { ...item, date: moment(item.date) }
 }
 
 export default Activity_form

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Schedule_activity } from "../../../server/models/activity"
 import { Resource } from "../../../common/types"
 import use_api from "../../hooks/use_api"
@@ -14,15 +14,15 @@ import moment from "moment"
 interface Form_settings {
   show: boolean
   edit_activity?: Resource<Schedule_activity>
-  initial_date?: Moment
+  initial_date?: string
 }
 
 const Schedule_display = () => {
-  const { get, remove } = use_api()
   const [activities, set_activities] = useState<Resource<Schedule_activity>[]>([])
   const [form_settings, set_form_settings] = useState<Form_settings>({
     show: false,
   })
+  const { get, remove } = use_api()
 
   useEffect(() => {
     get_activities()
@@ -40,7 +40,11 @@ const Schedule_display = () => {
     if (!found_activity)
       throw "Could not find activity to edit with provided search id"
 
-    open_modal({ show: true, edit_activity: found_activity })
+    open_modal({
+      show: true,
+      edit_activity: found_activity,
+      initial_date: undefined,
+    })
   }
 
   const delete_scheduled_activity = async (delete_id: string) => {
@@ -49,7 +53,12 @@ const Schedule_display = () => {
   }
 
   const close_modal = async () => {
-    set_form_settings({ show: false })
+    //Need to reset all states to ensure consistency between modal calls
+    set_form_settings({
+      show: false,
+      edit_activity: undefined,
+      initial_date: undefined,
+    })
     await get_activities()
   }
 
@@ -72,6 +81,7 @@ const Schedule_display = () => {
     }
     return event
   })
+
   return (
     <>
       <FullCalendar
@@ -79,13 +89,19 @@ const Schedule_display = () => {
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={calendar_events}
-        dateClick={({ dateStr }) =>
-          open_modal({ show: true, initial_date: moment(dateStr) })
-        }
+        dateClick={({ dateStr }) => {
+          //DateStr format is shown in docs https://fullcalendar.io/docs/dateClick
+          open_modal({
+            show: true,
+            edit_activity: undefined,
+            initial_date: moment(dateStr, "YYYY-MM-DD").toString(),
+          })
+        }}
         //FullCalendar does seem to export its types so need to define props inline.
         eventClick={({ event, jsEvent }) => {
-          if (jsEvent.button === 3) {
-            jsEvent.preventDefault()
+          jsEvent.preventDefault()
+          //Delete a event with the middle mouse button or click while holding the shift key
+          if (jsEvent.button === 1 || jsEvent.shiftKey) {
             delete_scheduled_activity(event.id)
           }
 
