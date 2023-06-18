@@ -119,6 +119,7 @@ const Weather_display: FC = () => {
           paddingLeft: "10em",
           paddingRight: "10em",
         }}
+        responsive={false}
       >
         {weather_icons}
 
