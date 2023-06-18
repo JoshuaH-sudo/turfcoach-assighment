@@ -6,6 +6,7 @@ import Activity_modal from "../activity/Activity_modal"
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import interactionPlugin from "@fullcalendar/interaction"
+import timeGridPlugin from "@fullcalendar/timegrid"
 
 import { capitalize } from "../../../common/utils"
 import { Moment } from "moment"
@@ -86,8 +87,12 @@ const Schedule_display = () => {
     <>
       <FullCalendar
         height={"100%"}
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
         initialView="dayGridMonth"
+        headerToolbar={{
+          left: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay,prev,next",
+        }}
         events={calendar_events}
         dateClick={({ dateStr }) => {
           //DateStr format is shown in docs https://fullcalendar.io/docs/dateClick
@@ -103,7 +108,7 @@ const Schedule_display = () => {
           //Delete a event by clicking while holding the shift key
           if (jsEvent.shiftKey) {
             delete_scheduled_activity(event.id)
-            return;
+            return
           }
 
           edit_scheduled_activity(event.id)
