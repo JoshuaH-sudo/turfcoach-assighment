@@ -3,6 +3,7 @@
 ### Prerequisites: 
 1. Insure yarn and docker are installed on your machine.
 2. This application itself was designed to mainly be run on a Linux, WSL or equivalent OS/System but can be run in docker.
+3. Add your API key in the .env file. You can create one with the 
 
 ### Run outside of Docker
 - Clone repo

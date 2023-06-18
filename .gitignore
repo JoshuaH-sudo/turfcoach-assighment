@@ -10,9 +10,6 @@ globalConfig.json
 
 *.env*
 !TEMPLATE.*
-.flaskenv*
-!.env.project
-!.env.vault
 
 *code-workspace*
 .vscode
