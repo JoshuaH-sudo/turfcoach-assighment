@@ -8,8 +8,6 @@ import expressStaticGzip from "express-static-gzip"
 import app_router from "./routes/app"
 import weather_router from "./routes/weather"
 import schedule_router from "./routes/activity"
-import { setup_pitch_collection } from "./models/pitch"
-import { setup_user_collection } from "./models/user"
 
 const { config } = require("dotenv")
 config()
@@ -41,15 +39,12 @@ app.use("/activity", schedule_router)
 app.use(error_handler)
 
 async function start_database() {
-  debugLog("Connecting to database")
-
-  if (!process.env.MONGO_URI) throw "MONGO_URI environment variable is not defined"
-  await mongoose.connect(process.env.MONGO_URI)
-
   try {
-    debugLog("Initializing the database")
-    await setup_pitch_collection()
-    await setup_user_collection()
+    debugLog("Connecting to database")
+
+    if (!process.env.MONGO_URI) throw "MONGO_URI environment variable is not defined"
+
+    await mongoose.connect(process.env.MONGO_URI)
   } catch (error) {
     errorLog(error)
   }
