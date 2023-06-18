@@ -44,7 +44,7 @@
    1. It was really difficult to find a free and useable calendar library. A lot of options were paid, did not allow for scheduling events or were designed for other frameworks like Vue.
    2. Trying to get the layout and size correct between the weather and schedule display. The EUI charts are `relative` positioned so it displayed outside the parent originally. I fixed this by manually setting the height of the parent container.
    3. Checking for overlapping activities on the same pitch. There was no requirement to set an end date and time for an activity, so I assumed that it was ok if another activity started exactly 1 minute or more after another on the same pitch.
-   4. Obtaining a consistent layout when switching from desktop to mobile screens. I solved this by using `em` units for the height of the weather display and the padding of its elements. This allowed the app to have a better layout when resizing the screen.
+   4. Obtaining a consistent layout when switching from desktop to mobile screens. I solved this by using `em` units for the height of the weather display. This allowed the app to have a more responsive layout.
 4. What are key things to consider when deploying this application for customer use/production?
    1. Need the API key or any sensitive environment variable to be provided dynamically during deployment. Something like Github Secrets or Dotenv can do this.
    2. Apply username and password to the database.

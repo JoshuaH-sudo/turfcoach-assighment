@@ -116,8 +116,8 @@ const Weather_display: FC = () => {
         style={{
           height: "100%",
           width: "100%",
-          paddingLeft: "10em",
-          paddingRight: "10em",
+          paddingLeft: "10%",
+          paddingRight: "10%",
         }}
         responsive={false}
       >
