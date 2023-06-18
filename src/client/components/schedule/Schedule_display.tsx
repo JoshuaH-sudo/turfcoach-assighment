@@ -100,8 +100,8 @@ const Schedule_display = () => {
         //FullCalendar does seem to export its types so need to define props inline.
         eventClick={({ event, jsEvent }) => {
           jsEvent.preventDefault()
-          //Delete a event with the middle mouse button or click while holding the shift key
-          if (jsEvent.button === 1 || jsEvent.shiftKey) {
+          //Delete a event by clicking while holding the shift key
+          if (jsEvent.shiftKey) {
             delete_scheduled_activity(event.id)
             return;
           }
