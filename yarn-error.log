@@ -1,8 +1,8 @@
 Arguments: 
-  /root/.nvm/versions/node/v18.4.0/bin/node /root/.nvm/versions/node/v18.4.0/bin/yarn add @fullcalendar/interactionPlugin
+  /root/.nvm/versions/node/v18.4.0/bin/node /root/.nvm/versions/node/v18.4.0/bin/yarn docker_prod_restart
 
 PATH: 
-  /root/.nvm/versions/node/v18.4.0/bin:/root/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Python38/Scripts/:/mnt/c/Python38/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/LLVM/bin:/mnt/c/Users/joshh/AppData/Roaming/nvm:/mnt/c/Program Files/nodejs:/mnt/c/Program Files (x86)/Yarn/bin/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Users/joshh-a/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/joshh-a/AppData/Local/atom/bin:/mnt/c/Users/joshh-a/AppData/Roaming/npm:/mnt/c/Users/joshh-a/AppData/Local/Yarn/bin:/mnt/c/Users/joshh-a/AppData/Local/Microsoft/WindowsApps:/mnt/c/WebDriver/bin:/mnt/c/WebDriver/bin/:/mnt/c/Program Files/PuTTY/":/mnt/c/Program Files/WireGuard/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/JoshuaHoban/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/JoshuaHoban/AppData/Local/Programs/Microsoft VS Code/bin
+  /tmp/yarn--1687069987466-0.5163919559486099:/root/personal/turfcoach-assighment/node_modules/.bin:/usr/local/share/.config/yarn/link/node_modules/.bin:/root/.nvm/versions/node/v18.4.0/libexec/lib/node_modules/npm/bin/node-gyp-bin:/root/.nvm/versions/node/v18.4.0/lib/node_modules/npm/bin/node-gyp-bin:/root/.nvm/versions/node/v18.4.0/bin/node_modules/npm/bin/node-gyp-bin:/root/.nvm/versions/node/v18.4.0/bin:/root/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Python38/Scripts/:/mnt/c/Python38/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/LLVM/bin:/mnt/c/Users/joshh/AppData/Roaming/nvm:/mnt/c/Program Files/nodejs:/mnt/c/Program Files (x86)/Yarn/bin/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Users/joshh-a/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/joshh-a/AppData/Local/atom/bin:/mnt/c/Users/joshh-a/AppData/Roaming/npm:/mnt/c/Users/joshh-a/AppData/Local/Yarn/bin:/mnt/c/Users/joshh-a/AppData/Local/Microsoft/WindowsApps:/mnt/c/WebDriver/bin:/mnt/c/WebDriver/bin/:/mnt/c/Program Files/PuTTY/":/mnt/c/Program Files/WireGuard/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/JoshuaHoban/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/JoshuaHoban/AppData/Local/Programs/Microsoft VS Code/bin
 
 Yarn version: 
   1.22.19
@@ -14,30 +14,23 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@fullcalendar%2finteractionPlugin: Not found
-      at params.callback [as _callback] (/root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:66145:18)
-      at self.callback (/root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:140890:22)
-      at Request.emit (node:events:537:28)
-      at Request.<anonymous> (/root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:141862:10)
-      at Request.emit (node:events:537:28)
-      at IncomingMessage.<anonymous> (/root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:141784:12)
-      at Object.onceWrapper (node:events:651:28)
-      at IncomingMessage.emit (node:events:549:35)
-      at endReadableNT (node:internal/streams/readable:1359:12)
-      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+  SyntaxError: /root/personal/turfcoach-assighment/package.json: Unexpected token } in JSON at position 1247
+      at JSON.parse (<anonymous>)
+      at /root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /root/.nvm/versions/node/v18.4.0/lib/node_modules/yarn/lib/cli.js:321:13
 
 npm manifest: 
   {
-    "name": "dev-academy-2023-exercise",
+    "name": "turfcoach-assignment",
     "version": "0.0.0",
     "private": true,
     "scripts": {
       "type_check": "tsc --noEmit",
-      "test": "NODE_ENV=test jest",
-      "backend_test": "yarn test --selectProjects backend",
-      "frontend_test": "yarn test --selectProjects frontend",
       "start": "DEBUG=app* ts-node ./bin/www",
       "build": "./scripts/build.sh",
+  
       "dev": "yarn dev_build && yarn start",
       "dev_build": "NODE_ENV=development yarn build",
       "docker_dev_stop": "docker-compose -f ./docker/docker-compose.dev.yml stop",
@@ -45,6 +38,7 @@ npm manifest:
       "docker_dev_start": "docker-compose -f ./docker/docker-compose.dev.yml up -d",
       "docker_dev_restart": "yarn docker_dev_stop && yarn docker_dev_start",
       "docker_dev": "yarn type_check && yarn docker_dev_build && yarn docker_dev_restart",
+  
       "prod": "yarn prod_build && yarn start",
       "prod_build": "NODE_ENV=production yarn build",
       "docker_prod_stop": "docker-compose -f ./docker/docker-compose.prod.yml stop",
@@ -52,7 +46,6 @@ npm manifest:
       "docker_prod_start": "docker-compose -f ./docker/docker-compose.prod.yml up -d",
       "docker_prod_restart": "yarn docker_prod_stop && yarn docker_prod_start",
       "docker_prod": "yarn type_check && yarn docker_prod_build && yarn docker_prod_restart",
-      "docker_push": "docker tag docker-turfcoach_scheduler_app joshuahsudo/turfcoach_scheduler_app:latest && docker push joshuahsudo/turfcoach_scheduler_app:latest"
     },
     "dependencies": {
       "@elastic/charts": "^58.1.0",
@@ -62,7 +55,10 @@ npm manifest:
       "@emotion/react": "^11.10.6",
       "@fullcalendar/core": "^6.1.8",
       "@fullcalendar/daygrid": "^6.1.8",
+      "@fullcalendar/interaction": "^6.1.8",
+      "@fullcalendar/moment": "^6.1.8",
       "@fullcalendar/react": "^6.1.8",
+      "@fullcalendar/timegrid": "^6.1.8",
       "@types/express": "^4.17.17",
       "@types/jest": "^29.5.0",
       "@types/morgan": "^1.9.4",
@@ -2134,15 +2130,32 @@ Lockfile:
     dependencies:
       preact "~10.12.1"
   
-  "@fullcalendar/daygrid@^6.1.8":
+  "@fullcalendar/daygrid@^6.1.8", "@fullcalendar/daygrid@~6.1.8":
     version "6.1.8"
     resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-6.1.8.tgz#2ca4a10892f5e2abeac0f8a8ecc8f07c002a4bf4"
     integrity sha512-kCZxQFKb9Vqa3CZRX0v7rMSJ2mlTt4gDpyLfiNJKxUAq7W51uKurPaFZWicaXy1ESHVBxKNlbx5uNjBpyu50JQ==
+  
+  "@fullcalendar/interaction@^6.1.8":
+    version "6.1.8"
+    resolved "https://registry.yarnpkg.com/@fullcalendar/interaction/-/interaction-6.1.8.tgz#36c35bd5718f893e8215a45d48a6ef7d5fcc4650"
+    integrity sha512-r6W4E9ohaA87M2uPSlmpE2WT7Fzu7LN0u2pE6D/tThruCEaAPbN8Pw5+sqclsuyTIL09mg0eSJm/ggJekTabSA==
+  
+  "@fullcalendar/moment@^6.1.8":
+    version "6.1.8"
+    resolved "https://registry.yarnpkg.com/@fullcalendar/moment/-/moment-6.1.8.tgz#bd9989740211f8b79503bf720cc074af09a66171"
+    integrity sha512-b/i8smze1msm7/Aoca7oJ9/JTRB9G1I08Qe5z+yTscvdgtWQY6QDGJHNU0h/91p4CO/uSNjg/bOEwIn8k8xqEA==
   
   "@fullcalendar/react@^6.1.8":
     version "6.1.8"
     resolved "https://registry.yarnpkg.com/@fullcalendar/react/-/react-6.1.8.tgz#247b979c5ab9dd74680935fb24a3235df46c7e80"
     integrity sha512-E8GQSQyZHkjpwxQW5Vci7iZgN7f33ntuRcvfGii4Fn35t9VHGz2SEyKAWXpVf38elcKTZKVgajU9ipStd+1LEg==
+  
+  "@fullcalendar/timegrid@^6.1.8":
+    version "6.1.8"
+    resolved "https://registry.yarnpkg.com/@fullcalendar/timegrid/-/timegrid-6.1.8.tgz#30b9860eb900c5dc9b72ceaab98c0728018a0ff1"
+    integrity sha512-3+3KHHCoNcaLs/gQt004hAqICbY5+WAffrZ0ePv+80HFB1OVh8BQ5XXLHSOUbTvXdgtUTcfBHuw9fhO31kt5gA==
+    dependencies:
+      "@fullcalendar/daygrid" "~6.1.8"
   
   "@hapi/hoek@^9.0.0":
     version "9.3.0"
