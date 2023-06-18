@@ -30,6 +30,7 @@
    3. **[FullCalander](https://fullcalendar.io/):** Was simple and easy-to-use, allowing me to quickly convert the schedule display from a table to a calendar.
    4. **[NodeJS](https://nodejs.org/en) / [ExpressJS](https://expressjs.com/):** A backend technology that I have the most experience in and can allow me to separate the logic between designing the routes, creating the data structure of my models and controlling the business logic for them.
    5. **[MongoDB](https://www.mongodb.com/) / [Mongoose](https://mongoosejs.com/):** This schema-less database is really good for quickly storing objects and other simple data in documents that can be used almost in the same way as regular javascript objects. The Mongoose helper functions like `findById` or the filtering functions allow for easily querying the DB without knowing an extra language like SQL.   
+   6. **[Open Weather Map API](https://openweathermap.org/):** This was the api used to gather weather information. It was easy to set up a free account and obtain API keys, it also provide weather icons and lots of useful information that could be used.
 2. What improvements or new features would you add if you had more time to work on the problem?
    1. Add [Joi](https://joi.dev/) validation to the `put` / `post` requests.
    2. Add a testing suite with [JEST](https://jestjs.io/).
