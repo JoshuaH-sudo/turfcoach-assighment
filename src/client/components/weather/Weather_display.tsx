@@ -2,9 +2,7 @@ import React, { FC, ReactNode, useEffect, useState } from "react"
 import use_api from "../../hooks/use_api"
 import {
   Chart,
-  ChartSize,
   DARK_THEME,
-  LayoutDirection,
   Metric,
   Settings,
 } from "@elastic/charts"
@@ -12,12 +10,8 @@ import { EUI_CHARTS_THEME_DARK } from "@elastic/eui/dist/eui_charts_theme"
 import {
   EuiFlexGroup,
   EuiFlexItem,
-  EuiGlobalStyles,
   EuiLoadingSpinner,
-  EuiSkeletonText,
-  useEuiTheme,
 } from "@elastic/eui"
-import { Global, Interpolation, Theme } from "@emotion/react"
 import { use_rain_metric } from "./hooks/use_rain_metric"
 import { use_temperature_metric } from "./hooks/use_temperature_metric"
 
@@ -60,6 +54,9 @@ export interface Current_Weather {
   }
 }
 
+/**
+ * Current weather information panel
+ */
 const Weather_display: FC = () => {
   const [weather_report, set_weather_report] = useState<Current_Weather>()
   const { get } = use_api()

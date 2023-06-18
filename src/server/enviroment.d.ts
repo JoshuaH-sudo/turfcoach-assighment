@@ -1,9 +1,8 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: 'development' | 'production' | 'test';
+      NODE_ENV: 'development' | 'production';
       MONGO_URI?: string;
-      MONGO_URI_FILE?: string;
       PORT?: string;
       WEATHER_API_KEY: string;
     }

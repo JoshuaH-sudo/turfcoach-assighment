@@ -15,10 +15,7 @@ import React, {
   useEffect,
   useState,
 } from "react"
-import {
-  Expanded_schedule_activity,
-  Schedule_activity,
-} from "../../../server/models/activity"
+import { Schedule_activity } from "../../../server/models/activity"
 import use_api from "../../hooks/use_api"
 import { Resource } from "../../../common/types"
 import { Notification_context } from "../Notification_provider"
@@ -97,6 +94,10 @@ interface Activity_form_props {
    */
   close_modal: () => void
 }
+
+/**
+ * The activity form to schedule new activities or edit existing ones.
+ */
 const Activity_form: FC<Activity_form_props> = ({
   edit_activity,
   initial_date,

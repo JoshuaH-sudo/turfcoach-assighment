@@ -8,12 +8,12 @@ import expressStaticGzip from "express-static-gzip"
 import app_router from "./routes/app"
 import weather_router from "./routes/weather"
 import schedule_router from "./routes/activity"
+import error_handler from "./middleware/error_handler"
 
 const { config } = require("dotenv")
 config()
 
 import debug from "debug"
-import error_handler from "./middleware/error_handler"
 const debugLog = debug("app:server:debug")
 const errorLog = debug("app:server:error")
 

@@ -10,7 +10,6 @@ import React, { FC, useRef } from "react"
 import Activity_form from "./Activity_form"
 import { Schedule_activity } from "../../../server/models/activity"
 import { Resource } from "../../../common/types"
-import { Moment } from "moment"
 import use_api from "../../hooks/use_api"
 
 interface Activity_modal_props {
@@ -19,6 +18,9 @@ interface Activity_modal_props {
   initial_date?: string
 }
 
+/**
+ * A modal to present the activity form.
+ */
 const Activity_modal: FC<Activity_modal_props> = ({
   close_modal,
   edit_activity,

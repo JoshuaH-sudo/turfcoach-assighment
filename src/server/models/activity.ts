@@ -1,19 +1,13 @@
 import { Moment } from "moment"
 import mongoose from "mongoose"
 /**
- * @remarks The date object will be stored as a string
+ * @remarks The date object will be stored as a string allowing it to be parsed easier
  */
 export interface Schedule_activity {
   type: string
   date: string
   user: string
   pitch: string
-}
-/**
- * The activity data with date object initialized
- */
-export interface Expanded_schedule_activity extends Omit<Schedule_activity, "date"> {
-  date: Moment
 }
 
 const activity_schema = new mongoose.Schema({

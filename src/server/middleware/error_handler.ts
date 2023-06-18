@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from "express"
 import debug from "debug"
 const errorLog = debug("app:weather_controller:error")
 
+/**
+ * Generic error middleware handler that ensures any errors are returned to the client in the correct format.
+ */
 const error_handler = (
   err: Error,
   req: Request,

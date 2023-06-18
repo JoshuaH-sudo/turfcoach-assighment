@@ -3,6 +3,12 @@ import { EuiSkeletonText } from "@elastic/eui"
 import React from "react"
 import { Current_Weather } from "../Weather_display"
 
+/**
+ * Displays the rain data from the weather report
+ *  
+ * @param weather_report The weather data to display
+ * @returns Provides an object to be used by EUI metric chart
+ */
 export const use_rain_metric = (weather_report?: Current_Weather) => {
   const metric: MetricDatum = {
     color: "#6699FF",

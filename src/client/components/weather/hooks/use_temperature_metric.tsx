@@ -3,13 +3,20 @@ import { EuiSkeletonText, useEuiTheme } from "@elastic/eui"
 import React from "react"
 import { Current_Weather } from "../Weather_display"
 
+/**
+ * Displays the temperature data from the weather report
+ *
+ * @param weather_report The weather data to display
+ * @returns Provides an object to be used by EUI metric chart
+ */
 export const use_temperature_metric = (weather_report?: Current_Weather) => {
   const { euiTheme } = useEuiTheme()
 
   const metric: MetricDatum = {
     color: weather_report
       ? get_temperature_colour(weather_report.main.temp)
-      : euiTheme.colors.lightShade,
+      : // Set a neutral colour from the current UI theme when no temperature is retrieved yet.
+        euiTheme.colors.lightShade,
     title: "Temperature",
     extra: (
       <EuiSkeletonText lines={3} size="s" isLoading={!weather_report}>
@@ -39,10 +46,10 @@ export const use_temperature_metric = (weather_report?: Current_Weather) => {
 }
 
 /**
- * Will give a colour that matches to the temperature provided.
+ * Provides a colour that matches to the provided temperature.
  *
  * @param degrees
- * @returns A hex colour code
+ * @returns A colour's hex code
  */
 const get_temperature_colour = (degrees: number) => {
   if (degrees <= -10) return "#BDE9FF"

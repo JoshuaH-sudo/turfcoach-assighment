@@ -7,6 +7,9 @@ interface Notification_provider_props {
   children: ReactNode
 }
 
+/**
+ * Wrapper component that will provide handlers to create toasts to its children.
+ */
 const Notification_provider: FC<Notification_provider_props> = ({ children }) => {
   const [toasts, set_toasts] = useState<Toast[]>([])
 
@@ -58,6 +61,7 @@ interface Notification_context_props {
 }
 
 export const Notification_context = createContext<Notification_context_props>(
+  // Using type assertion as the methods will be set when the wrapper component is used.
   {} as Notification_context_props
 )
 

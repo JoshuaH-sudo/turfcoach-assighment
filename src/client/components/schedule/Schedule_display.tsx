@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Schedule_activity } from "../../../server/models/activity"
 import { Resource } from "../../../common/types"
 import use_api from "../../hooks/use_api"
 import Activity_modal from "../activity/Activity_modal"
+
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import interactionPlugin from "@fullcalendar/interaction"
 import timeGridPlugin from "@fullcalendar/timegrid"
 
 import { capitalize } from "../../../common/utils"
-import { Moment } from "moment"
 import moment from "moment"
 
 interface Form_settings {
@@ -18,6 +18,9 @@ interface Form_settings {
   initial_date?: string
 }
 
+/**
+ * Displays the schedule calendar, where you can view, add or edit activities.
+ */
 const Schedule_display = () => {
   const [activities, set_activities] = useState<Resource<Schedule_activity>[]>([])
   const [form_settings, set_form_settings] = useState<Form_settings>({
@@ -102,7 +105,7 @@ const Schedule_display = () => {
             initial_date: moment(dateStr, "YYYY-MM-DD").toString(),
           })
         }}
-        //FullCalendar does seem to export its types so need to define props inline.
+        //FullCalendar does seem to export its types, so need to define props inline to get autocompletion.
         eventClick={({ event, jsEvent }) => {
           jsEvent.preventDefault()
           //Delete a event by clicking while holding the shift key

@@ -13,6 +13,8 @@ import Weather_display from "./weather/Weather_display"
 import Schedule_display from "./schedule/Schedule_display"
 import { Interpolation, Theme } from "@emotion/react"
 import Notification_provider from "./Notification_provider"
+
+//This will ensure the panels take up the provided space
 const fill_panel: Interpolation<Theme> = {
   "& > *": {
     height: "100%",
@@ -24,6 +26,7 @@ const fill_panel: Interpolation<Theme> = {
 
 const weather_section: Interpolation<Theme> = {
   "&": {
+    // Using em units for the layout to remain consistent on smaller screens
     height: "20em",
     paddingBottom: 0,
   },
