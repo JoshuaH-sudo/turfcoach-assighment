@@ -22,6 +22,24 @@
   - The production build version: `yarn docker_prod` 
 - Open browser [here](http://localhost:8080/)
 
+## Usage
+### Schedule A New Activity
+1. Click on any day slot on the calendar to open up the form modal.
+2. Select the type, user, time and pitch for the activity.
+3. Click `Add` and the calendar will update with the new activity.
+
+### Edit An Existing Activity
+1. Click the event in the calendar and the edit from will appear.
+
+### Deleting An Activity
+1. Hold the `Shift` key and click on the event in the calendar you wish to remove.
+or
+1. Edit an event and open up the form modal.
+2. Click the `Delete` button on the top right of the modal to remove the activity.
+
+### Switch Views (Month, Week, Day)
+1. Click one of the three options on the top right of the calendar.
+
 ## Follow Up Question Answers
 ### Implementation
 1. What libraries did you use? What are they used for? Why did you choose them specifically?
