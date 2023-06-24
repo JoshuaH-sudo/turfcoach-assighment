@@ -2,6 +2,7 @@ version: "3"
 name: turfcoach_assighnment
 services:
   turfcoach_scheduler_app:
+    container_name: turfcoach_scheduler_app
     build:
       context: ../
       dockerfile: ./docker/dockerfile.dev.yml
@@ -11,13 +12,14 @@ services:
     environment:
       - PORT=8080
       - NODE_ENV=development
-      - MONGO_URI=mongodb://app_database:27017/turfcoach_scheduler
+      - MONGO_URI=mongodb://turfcoach_app_database:27017/turfcoach_scheduler
     env_file:
       - ../.env
     depends_on:
       - app_database
 
-  app_database:
+  turfcoach_app_database:
+    container_name: turfcoach_app_database
     image: mongo
     restart: always
     ports:
