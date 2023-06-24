@@ -1,4 +1,5 @@
 version: "3"
+name: turfcoach_assighnment
 services:
   turfcoach_scheduler_app:
     build:
