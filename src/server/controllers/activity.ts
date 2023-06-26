@@ -29,12 +29,11 @@ export const create_activity = async (
   try {
     debug_log("Scheduling new activity")
     const { data } = req.body
-    
+
     const overlapping_activity = await check_overlapping_date(data)
     if (overlapping_activity) {
       res.status(409).send({
-        message:
-          "Another activity on this pitch occurs at the same time.",
+        message: "Another activity on this pitch occurs at the same time.",
       })
       return
     }
@@ -57,11 +56,10 @@ export const edit_activity = async (
     const { data } = req.body
     const { _id } = req.params
 
-    const overlapping_activity = await check_overlapping_date(data)
+    const overlapping_activity = await check_overlapping_date(data, _id)
     if (overlapping_activity) {
       res.status(409).send({
-        message:
-          "Another activity on this pitch occurs at the same time.",
+        message: "Another activity on this pitch occurs at the same time.",
       })
       return
     }
@@ -73,18 +71,39 @@ export const edit_activity = async (
   }
 }
 
-const check_overlapping_date = async (data: Schedule_activity) => {
+const check_overlapping_date = async (data: Schedule_activity, _id?: string) => {
+  if (_id) {
+    const doc = await Activity.findById(_id)
+    if (!doc) throw "Could not find document with provided id"
+    //Check if activity on this pitch is already in use.
+    return await Activity.findOne({
+      _id: {
+        $ne: doc._id,
+      },
+      pitch: data.pitch,
+      start_date: {
+        // Assuming that the exact time and date needs to be check, as no requirement to set an end date was asked.
+        // Check if an activity starts at the same time.
+        $gte: moment(data.end_date).toDate(),
+      },
+      end_date: {
+        $lte: moment(data.start_date).toDate(),
+      }
+    })
+  }
+
   //Check if activity on this pitch is already in use.
-  const overlapping_activity = await Activity.findOne({
+  return await Activity.findOne({
     pitch: data.pitch,
-    date: {
+    start_date: {
       // Assuming that the exact time and date needs to be check, as no requirement to set an end date was asked.
       // Check if an activity starts at the same time.
-      $eq: moment(data.date).toDate(),
+      $gte: moment(data.start_date).toDate(),
+    },
+    end_date: {
+      $lte: moment(data.end_date).toDate(),
     },
   })
-
-  return overlapping_activity
 }
 
 export const delete_activity = async (

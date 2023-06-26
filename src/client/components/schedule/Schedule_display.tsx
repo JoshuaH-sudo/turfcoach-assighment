@@ -71,7 +71,7 @@ const Schedule_display = () => {
   }
 
   const calendar_events = activities.map((activity) => {
-    const { _id, user, type, date, pitch } = activity
+    const { _id, user, type, start_date, end_date, pitch } = activity
 
     const title = `${capitalize(user)} ${capitalize(type)} ${capitalize(
       pitch
@@ -81,7 +81,7 @@ const Schedule_display = () => {
       id: _id,
       title,
       display: "block",
-      date,
+      date: start_date,
     }
     return event
   })

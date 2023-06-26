@@ -1,5 +1,6 @@
 import {
   EuiDatePicker,
+  EuiDatePickerRange,
   EuiForm,
   EuiFormRow,
   EuiSelect,
@@ -71,7 +72,8 @@ const user_options: EuiSelectOption[] = [
 
 const new_schedule_activity: Schedule_activity = {
   type: "mowing",
-  date: moment().toString(),
+  start_date: moment().toString(),
+  end_date: moment().toString(),
   user: "john",
   pitch: "pitch_1",
 }
@@ -114,7 +116,7 @@ const Activity_form: FC<Activity_form_props> = ({
 
   useEffect(() => {
     if (initial_date) {
-      set_activity_schedule_data({ ...activity_data, date: initial_date })
+      set_activity_schedule_data({ ...activity_data, start_date: initial_date })
     }
   }, [initial_date])
 
@@ -126,9 +128,15 @@ const Activity_form: FC<Activity_form_props> = ({
     })
   }
 
-  const on_date_select = (date: Moment) => {
+  const on_start_date_select = (date: Moment) => {
     set_activity_schedule_data((prev_state) => {
-      return { ...prev_state, date: date.toString() }
+      return { ...prev_state, start_date: date.toString() }
+    })
+  }
+
+  const on_end_date_select = (date: Moment) => {
+    set_activity_schedule_data((prev_state) => {
+      return { ...prev_state, end_date: date.toString() }
     })
   }
 
@@ -180,7 +188,7 @@ const Activity_form: FC<Activity_form_props> = ({
     }
   }
 
-  const { type, date, user, pitch } = activity_data
+  const { type, start_date, end_date, user, pitch } = activity_data
   return (
     <EuiForm component="form" onSubmit={on_submit}>
       <EuiFormRow>
@@ -191,11 +199,22 @@ const Activity_form: FC<Activity_form_props> = ({
         />
       </EuiFormRow>
 
-      <EuiFormRow>
-        <EuiDatePicker
-          showTimeSelect
-          selected={moment(date)}
-          onChange={on_date_select}
+      <EuiFormRow title="date">
+        <EuiDatePickerRange
+          startDateControl={
+            <EuiDatePicker
+              showTimeSelect
+              selected={moment(start_date)}
+              onChange={on_start_date_select}
+            />
+          }
+          endDateControl={
+            <EuiDatePicker
+              showTimeSelect
+              selected={moment(end_date)}
+              onChange={on_end_date_select}
+            />
+          }
         />
       </EuiFormRow>
 

@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "type_check": "tsc --noEmit",
+    "local_dev": "yarn dev_build && yarn local_start" ,
+    "local_start": "NODE_ENV=development PORT=8080 MONGO_URI=mongodb://localhost:27017/turfcoach_scheduler DEBUG=app* ts-node ./bin/www",
     "start": "DEBUG=app* ts-node ./bin/www",
     "build": "./scripts/build.sh",
 

@@ -54,6 +54,31 @@ export interface Current_Weather {
   }
 }
 
+const DUMMY_WEATHER: Current_Weather = {
+  main: {
+    feels_like: 10,
+    humidity: 50,
+    temp: 11,
+    temp_max: 15,
+    temp_min: 5
+  },
+  weather: [
+    {
+      id: 803,
+      main: "Clouds",
+      description: "broken clouds",
+      icon: "04d"
+    },
+  ],
+  clouds: {
+    all: 80
+  },
+  rain: {
+    "1h": 10.00,
+    "3h": 15.00
+  }
+}
+
 /**
  * Current weather information panel
  */
@@ -86,7 +111,14 @@ const Weather_display: FC = () => {
       alert(`Your browser doesn't support Geolocation`)
     }
 
-    navigator.geolocation.getCurrentPosition(get_location_data, on_position_error)
+    const check_interval = setInterval(() => {
+      console.debug("Interval: Getting weather")
+      navigator.geolocation.getCurrentPosition(get_location_data, on_position_error)
+    }, 2000)
+
+    return () => {
+      clearInterval(check_interval)
+    }
   }, [])
 
   let weather_icons: ReactNode = (

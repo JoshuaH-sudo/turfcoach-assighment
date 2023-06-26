@@ -5,7 +5,8 @@ import mongoose from "mongoose"
  */
 export interface Schedule_activity {
   type: string
-  date: string
+  start_date: string
+  end_date: string
   user: string
   pitch: string
 }
@@ -17,7 +18,11 @@ const activity_schema = new mongoose.Schema({
     required: true,
   },
   // Will hold the date and time of the activity
-  date: {
+  start_date: {
+    type: Date,
+    required: true,
+  },
+  end_date: {
     type: Date,
     required: true,
   },
